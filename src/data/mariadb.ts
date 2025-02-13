@@ -6,7 +6,7 @@ import {
   DB_PORT,
   DB_USER,
   NODE_ENV,
-} from "../config/vars.ts";
+} from "../config/vars";
 
 export const AppDataSource = new DataSource({
   type: "mariadb",
@@ -15,7 +15,7 @@ export const AppDataSource = new DataSource({
   username: DB_USER,
   password: DB_PASSWORD,
   database: DB_NAME,
-  entities: [`${__dirname}/../../**/models/*.entity/*.{ts,js}`],
+  entities: [`${__dirname}/../../**/adapters/*.entity/*.{ts,js}`],
   migrations: [`${__dirname}/migrations/*.{ts,js}`],
   synchronize: false,
   logging: NODE_ENV == "dev" ? true : false,

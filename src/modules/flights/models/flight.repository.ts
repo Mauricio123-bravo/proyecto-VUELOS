@@ -1,4 +1,4 @@
-import { Flight } from "./flight.entity";
+import { Flight } from "./flight.model";
 
 export interface FlightRepo {
     findAll(): Promise<Flight[]>

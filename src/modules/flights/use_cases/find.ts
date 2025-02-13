@@ -1,4 +1,4 @@
-import { Flight } from "../models/flight.entity";
+import { Flight } from "../models/flight.model";
 import { FlightRepo } from "../models/flight.repository";
 
 export class FindFlightsUseCase {
