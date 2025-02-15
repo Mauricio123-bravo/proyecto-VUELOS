@@ -23,5 +23,6 @@ export class FlightEntity {
 
   @ManyToOne(() => Airplane, (airplane) => airplane.flights)
   @JoinColumn({ name: "airplane_id" }) 
+  
   airplane: Airplane; 
 }
