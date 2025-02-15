@@ -1,4 +1,13 @@
+import { Airplane } from "../../airplanes/models/airplane.model";
+
 export abstract class Flight {
   id: number;
-  distance: number;
+  origin: string;
+  destination: string;
+  departureDate: Date;
+  arrivalDate: Date;
+  status: boolean;
+  airplane: Airplane;
+
+
 }

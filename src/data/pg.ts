@@ -9,7 +9,7 @@ import {
 } from "../config/vars";
 
 export const AppDataSource = new DataSource({
-  type: "mariadb",
+  type: "postgres",
   host: DB_HOST,
   port: Number(DB_PORT),
   username: DB_USER,
