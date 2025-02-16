@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Airplane } from "../../airplanes/models/airplane.model";
+import { AirplaneEntity } from "../../airplanes/adapters/airplane.entity";
 
 @Entity("flights")
 export class FlightEntity {
@@ -21,8 +21,7 @@ export class FlightEntity {
   @Column({ type: "boolean", nullable: false })
   status: boolean; 
 
-  @ManyToOne(() => Airplane, (airplane) => airplane.flights)
+  @ManyToOne(() => AirplaneEntity, (airplane) => airplane.flights)
   @JoinColumn({ name: "airplane_id" }) 
-  
-  airplane: Airplane; 
+  airplane: AirplaneEntity; 
 }

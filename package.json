@@ -6,7 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -w",
-    "dev": "nodemon build/index.js"
+    "dev": "nodemon src/index.js",
+    "start": "ts-node src/index.ts",
+    "typeorm": "npx typeorm-ts-node-commonjs -d src/data/pg.ts",
+    "migrations:generate": "pnpm run typeorm migration:generate",
+    "migrations:run": "pnpm run typeorm migration:run"
   },
   "keywords": [],
   "author": "Mauricio bravo y Santiago Hernandez",
@@ -24,6 +28,7 @@
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.13.2",
     "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   }
 }

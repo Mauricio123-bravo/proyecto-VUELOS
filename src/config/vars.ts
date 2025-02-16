@@ -1,12 +1,12 @@
 import "dotenv/config";
 
 export const {
-  DB_NAME = "dbvuelos",
+  DB_NAME = "",
   DB_PORT = 5432,
-  DB_HOST = "localhost",
-  DB_USER = "postgres",
+  DB_HOST = "",
+  DB_USER = "",
   SECRET = "",
-  DB_PASSWORD = "0000",
+  DB_PASSWORD = "",
   NODE_ENV = "dev",
-  PORT = "3000"
+  PORT = "3000",
 } = process.env;
