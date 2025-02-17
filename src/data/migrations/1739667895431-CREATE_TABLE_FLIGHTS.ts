@@ -15,4 +15,6 @@ export class CREATETABLEFLIGHTS1739667895431 implements MigrationInterface {
         await queryRunner.query(`DROP TABLE "airplanes"`);
     }
 
+    
+
 }
