@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { FlightEntity } from "../../flights/adapters/flight.entity";
+import { MaintenanceEntity } from "../../maintenances/adapters/maintenance.entity";
 
 @Entity("airplanes")
 export class AirplaneEntity {
@@ -17,4 +18,7 @@ export class AirplaneEntity {
 
   @OneToMany(() => FlightEntity, (flight) => flight.airplane)
   flights: FlightEntity[]; 
+
+  @OneToMany(() => MaintenanceEntity, (maintenance) => maintenance.airplane)
+  maintenances: MaintenanceEntity[]; 
 }

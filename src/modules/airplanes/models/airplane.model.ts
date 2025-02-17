@@ -1,4 +1,5 @@
 import { Flight } from "../../flights/models/flight.model";
+import { Maintenance } from "../../maintenances/models/maintenance.model";
 
 export abstract class Airplane {
     id: number;
@@ -6,6 +7,7 @@ export abstract class Airplane {
     capacity: string;
     status: boolean;
     flights: Flight[]
+    maintenances: Maintenance[] 
   
   }
   
