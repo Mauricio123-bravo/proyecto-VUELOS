@@ -3,6 +3,12 @@ import { AppDataSource } from "../data/pg";
 import { PORT } from "./vars";
 import { flightRouter } from "../modules/flights/dependencies";
 import morgan from "morgan";
+import { flightHistoryRouter } from "../modules/flightshistory/dependencies";
+import { locatedRouter } from "../modules/located/dependencies";
+import { airplaneRouter } from "../modules/airplanes/dependencies";
+import { maintenanceRouter } from "../modules/maintenances/dependencies";
+import { pilotRouter } from "../modules/pilots/dependencies";
+import { userRouter } from "../modules/users/dependencies";
 
 export class App {
   private static app: Application = express();
@@ -30,5 +36,11 @@ export class App {
 
   private static initRoutes() {
     this.app.use(flightRouter.getRoutes());
+    this.app.use(flightHistoryRouter.getRoutes());
+    this.app.use(locatedRouter.getRoutes());
+    this.app.use(airplaneRouter.getRoutes());
+    this.app.use(maintenanceRouter.getRoutes());
+    this.app.use(pilotRouter.getRoutes());
+    this.app.use(userRouter.getRoutes());
   }
 }
