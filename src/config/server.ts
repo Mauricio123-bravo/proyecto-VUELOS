@@ -10,6 +10,7 @@ import { maintenanceRouter } from "../modules/maintenances/dependencies";
 import { pilotRouter } from "../modules/pilots/dependencies";
 import { userRouter } from "../modules/users/dependencies";
 import cors from "cors";
+import { trackRouter } from "../modules/tracks/dependencies";
 
 export class App {
   private static app: Application = express();
@@ -48,5 +49,6 @@ export class App {
     this.app.use(maintenanceRouter.getRoutes());
     this.app.use(pilotRouter.getRoutes());
     this.app.use(userRouter.getRoutes());
+    this.app.use(trackRouter.getRoutes())
   }
 }
