@@ -9,6 +9,7 @@ import { airplaneRouter } from "../modules/airplanes/dependencies";
 import { maintenanceRouter } from "../modules/maintenances/dependencies";
 import { pilotRouter } from "../modules/pilots/dependencies";
 import { userRouter } from "../modules/users/dependencies";
+import cors from "cors";
 
 export class App {
   private static app: Application = express();
@@ -32,6 +33,11 @@ export class App {
     this.app.use(morgan("dev"));
     this.app.use(express.json({ limit: "50mb" }));
     this.app.use(express.urlencoded({ extended: true }));
+
+    this.app.use(cors({
+      origin: 'http://localhost:5173', 
+      credentials: true
+    }));
   }
 
   private static initRoutes() {
