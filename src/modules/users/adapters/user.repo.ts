@@ -1,3 +1,4 @@
+import { Equal } from "typeorm";
 import { AppDataSource } from "../../../data/pg";
 import { User } from "../models/user.model";
 import { UserRepo } from "../models/user.repository";
@@ -8,5 +9,9 @@ export class UserPgRepo implements UserRepo {
 
   findAll(): Promise<User[]> {
     return this.repository.find();
+  }
+
+  findByEmail(email: string): Promise<User | null> {
+    return this.repository.findOneBy({ email: Equal(email) });
   }
 }

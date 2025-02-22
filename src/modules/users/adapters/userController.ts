@@ -2,9 +2,9 @@ import { FindUsersUseCase } from "../use_cases/find";
 import { Request, Response } from "express";
 
 export class UserController {
-    constructor(private readonly findAllUseCase: FindUsersUseCase) { }
+  constructor(private readonly findAllUseCase: FindUsersUseCase) {}
 
- findAll = (req: Request, res: Response) => {
+  findAll = (req: Request, res: Response) => {
     this.findAllUseCase
       .run()
       .then((data) => {
@@ -18,5 +18,5 @@ export class UserController {
         });
       });
   };
-   
 }
+
