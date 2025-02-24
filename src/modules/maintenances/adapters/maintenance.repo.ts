@@ -9,4 +9,14 @@ export class MaintenancePgRepo implements MaintenanceRepo {
   findAll(): Promise<Maintenance[]> {
     return this.repository.find();
   }
+
+  async findAllPaginated(limit: number, offset: number): Promise<{ maintenances: MaintenanceEntity[], total: number }> {
+    const [maintenances, total] = await this.repository.findAndCount({
+      take: limit,  // Límite de registros por página
+      skip: offset, // Desde qué registro empezar
+    });
+
+    return { maintenances, total };
+  }
+
 }

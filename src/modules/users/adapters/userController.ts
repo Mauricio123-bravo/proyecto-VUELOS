@@ -2,21 +2,31 @@ import { FindUsersUseCase } from "../use_cases/find";
 import { Request, Response } from "express";
 
 export class UserController {
-  constructor(private readonly findAllUseCase: FindUsersUseCase) {}
+  constructor(private readonly findAllUseCase: FindUsersUseCase) { }
 
-  findAll = (req: Request, res: Response) => {
-    this.findAllUseCase
-      .run()
-      .then((data) => {
-        res.status(200).json(data);
-      })
-      .catch((err) => {
-        console.log(err);
+  findAll = async (req: Request, res: Response) => {
 
-        res.status(500).json({
-          message: "Something went wrong while getting data, try latter.",
-        });
+    try {
+      const page = parseInt(req.query.page as string) || 1; // Página actual (por defecto 1)
+      const limit = parseInt(req.query.limit as string) || 10; // Cantidad de registros por página (por defecto 10)
+
+      const { data, total, totalPages } = await this.findAllUseCase
+        .run(page, limit);
+      res.status(200).json({
+        data,
+        total,
+        page,
+        totalPages
+      }
+      )
+    }
+    catch (err) {
+      console.log(err);
+
+      res.status(500).json({
+        message: "Something went wrong while getting data, try latter.",
       });
+    }
   };
 }
 
