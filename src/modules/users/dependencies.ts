@@ -13,4 +13,4 @@ const userController: UserController = new UserController(
 );
 const userRouter: UserRouter= new UserRouter(userController);
 
-export { userRouter };
+export {userRepository, userRouter };

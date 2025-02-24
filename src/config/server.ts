@@ -11,6 +11,8 @@ import { pilotRouter } from "../modules/pilots/dependencies";
 import { userRouter } from "../modules/users/dependencies";
 import cors from "cors";
 import { trackRouter } from "../modules/tracks/dependencies";
+import { authMiddleware, authRouter } from "../modules/auth/dependencies";
+import { AuthMiddleware } from "../modules/auth/adapters/authMiddelware";
 
 export class App {
   private static app: Application = express();
@@ -31,24 +33,29 @@ export class App {
   }
 
   private static middlewares() {
+    const cookieParser = require("cookie-parser");
     this.app.use(morgan("dev"));
     this.app.use(express.json({ limit: "50mb" }));
     this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(cookieParser());
 
-    this.app.use(cors({
-      origin: 'http://localhost:5173', 
-      credentials: true
-    }));
+    this.app.use(
+      cors({
+        origin: "http://localhost:5173",
+        credentials: true,
+      }),
+    );
   }
 
   private static initRoutes() {
-    this.app.use(flightRouter.getRoutes());
+    this.app.use("/flights", authMiddleware.authenticate, flightRouter.getRoutes());
     this.app.use(flightHistoryRouter.getRoutes());
     this.app.use(locatedRouter.getRoutes());
     this.app.use(airplaneRouter.getRoutes());
     this.app.use(maintenanceRouter.getRoutes());
     this.app.use(pilotRouter.getRoutes());
     this.app.use(userRouter.getRoutes());
-    this.app.use(trackRouter.getRoutes())
+    this.app.use(trackRouter.getRoutes());
+    this.app.use(authRouter.getRoutes());
   }
 }

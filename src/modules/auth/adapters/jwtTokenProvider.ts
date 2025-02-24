@@ -1,8 +1,10 @@
 import * as jwt from "jsonwebtoken";
-import { SECRET } from "@config/vars";
-import { TokenProvider } from "@auth/models/tokenProvider";
-import { Token } from "@auth/models/token";
-import { User } from "@users/models/user.model";
+import { TokenProvider } from "../models/tokenProvider";
+import { Token } from "../models/token.model";
+import { ExpiredToken } from "../models/expired.error";
+import { InvalidCredentials } from "../models/credential.error";
+import { User } from "../../users/models/user.model";
+import { SECRET } from "../../../config/vars";
 
 export default class JWTProvider implements TokenProvider {
   getPayload(token: string): Token {
@@ -10,18 +12,21 @@ export default class JWTProvider implements TokenProvider {
     return payload as Token;
   }
 
-  validate(token: string): boolean {
+  validate(token: string): void {
     try {
       jwt.verify(token, SECRET);
-      return true;
-    } catch {
-      return false;
+    } catch (error) {
+      if (error instanceof jwt.TokenExpiredError) {
+        throw new ExpiredToken();
+      }
+      throw new InvalidCredentials();
     }
   }
 
-  getToken(user: User): string {
+  generateToken(user: User, expiration: number): string {
+
     return jwt.sign({ id: user.id, email: user.email }, SECRET, {
-      expiresIn: "8h",
+      expiresIn: expiration,
     });
   }
 }
