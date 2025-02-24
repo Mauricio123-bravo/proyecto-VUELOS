@@ -5,13 +5,17 @@ import { UserRepo } from "../models/user.repository";
 import { UserEntity } from "./user.entity";
 
 export class UserPgRepo implements UserRepo {
+  async save(user: User): Promise<number> {
+    return (await this.repository.save(user)).id;
+  }
   private repository = AppDataSource.getRepository(UserEntity);
 
   findAll(): Promise<User[]> {
     return this.repository.find();
   }
 
-  findByEmail(email: string): Promise<User | null> {
-    return this.repository.findOneBy({ email: Equal(email) });
+  async findByEmail(email: string): Promise<User | null> {
+    const user =  await this.repository.findOneBy({ email: Equal(email) });
+    return user
   }
 }

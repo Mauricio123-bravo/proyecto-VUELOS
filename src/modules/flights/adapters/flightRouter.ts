@@ -6,8 +6,9 @@ export default class FlightRouter {
 
   public getRoutes(): Router {
     const router = Router();
+
     router
-    .route("/flights")
+    .route("")
     .get(this.flightController.findAll);
 
     return router;

@@ -1,27 +1,53 @@
-import { InvalidCredentials } from "@auth/models/credentialError";
-import { EncryptionProvider } from "@auth/models/encryptionProvider";
-import { TokenProvider } from "@auth/models/tokenProvider";
-import { User } from "@users/models/user.model";
-import { UserRepo } from "@users/models/user.repository";
+import { SessionRepo } from "../models/session.repository";
+import { EncryptionProvider } from "../models/encryptionProvider";
+import { TokenProvider } from "../models/tokenProvider";
+import { InvalidCredentials } from "../models/credential.error";
+import { UserRepo } from "../../users/models/user.repository";
+import { User } from "../../users/models/user.model";
 
-export default class Login {
+export default class LoginUseCase {
   constructor(
     private readonly userRepository: UserRepo,
+    private readonly sessionRepository: SessionRepo,
     private readonly encryption: EncryptionProvider,
     private readonly token: TokenProvider,
   ) {}
 
-  async login({ email, password }: User): Promise<string> {
+  async login({
+    email,
+    password,
+  }: User, ip: string): Promise<{ access: string; refresh: string }> {
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
+      console.log("user not found");
       throw new InvalidCredentials();
     }
 
     const valid = this.encryption.verifyHash(password, user.password);
     if (!valid) {
+      console.log("invalid hash");
+
       throw new InvalidCredentials();
     }
 
-    return this.token.getToken(user);
+    const timeAccess = 1;
+    const timeRefresh = 60 * 60 * 5;
+
+    try {
+      const refresh = this.token.generateToken(user, timeAccess);
+      const access = this.token.generateToken(user, timeRefresh);
+
+      await this.sessionRepository.save({
+        id: 0,
+        token: refresh,
+        user: user,
+        revoked: false,
+        ipAddress: ip,
+      });
+      return { access, refresh };
+    } catch (err) {
+      console.log("error saving session");
+      return { access: "empty", refresh: "empty" };
+    }
   }
 }
