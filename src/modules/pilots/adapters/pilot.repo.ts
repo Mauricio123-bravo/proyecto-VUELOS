@@ -5,7 +5,7 @@ import { Pilot } from "../models/pilot.model";
 import { PilotEntity } from "./pilot.entity";
 
 
-export class PilotPgRepo implements PilotRepo{
+export class PilotPgRepo implements PilotRepo {
 
     private repository = AppDataSource.getRepository(PilotEntity);
 

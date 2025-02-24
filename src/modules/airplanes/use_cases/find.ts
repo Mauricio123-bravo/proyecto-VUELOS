@@ -1,10 +1,16 @@
+import { getPagination, getTotalPages } from "../../shared/utils/getPagination";
 import { Airplane } from "../models/airplane.model";
 import { AirplaneRepo } from "../models/airplane.repository";
 
 export class FindAirplanesUseCase {
-  constructor(private readonly repository: AirplaneRepo) {}
+  constructor(private readonly repository: AirplaneRepo) { }
 
-  public run = async (): Promise<Airplane[]> => {
-    return await this.repository.findAll();
+  public run = async (page: number, limit: number): Promise<{ data: Airplane[], total: number, totalPages: number }> => {
+
+    const offset = getPagination(page, limit);
+
+    const response = await this.repository.findAllPaginated(limit, offset);
+
+    return getTotalPages<Airplane>(response.total, response.airplanes, limit);
   };
 }

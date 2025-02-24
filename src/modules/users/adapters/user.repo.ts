@@ -14,4 +14,13 @@ export class UserPgRepo implements UserRepo {
   findByEmail(email: string): Promise<User | null> {
     return this.repository.findOneBy({ email: Equal(email) });
   }
+
+  async findAllPaginated(limit: number, offset: number): Promise<{ users: UserEntity[], total: number }> {
+    const [users, total] = await this.repository.findAndCount({
+      take: limit,  // Límite de registros por página
+      skip: offset, // Desde qué registro empezar
+    });
+
+    return { users, total };
+  }
 }

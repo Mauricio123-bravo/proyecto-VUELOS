@@ -10,4 +10,13 @@ export class LocatedPgRepo implements LocatedRepo {
   findAll(): Promise<Located[]> {
     return this.repository.find();
   }
+
+  async findAllPaginated(limit: number, offset: number): Promise<{ located: LocatedEntity[], total: number }> {
+    const [located, total] = await this.repository.findAndCount({
+      take: limit,  // Límite de registros por página
+      skip: offset, // Desde qué registro empezar
+    });
+
+    return { located, total };
+  }
 }
