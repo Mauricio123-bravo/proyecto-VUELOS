@@ -1,8 +1,19 @@
 import { Request, Response } from "express";
 import { FindPilotsUseCase } from "../../pilots/use_cases/find";
+import { FindPilotByIdUseCase } from "../use_cases/findById";
+import { CreatePilotUseCase } from "../use_cases/create";
+import { UpdatePilotUseCase } from "../use_cases/update";
+import { DeletePilotUseCase } from "../use_cases/delete";
 
 export class PilotController {
-  constructor(private readonly findAllUseCase: FindPilotsUseCase) { }
+  constructor(private readonly findAllUseCase: FindPilotsUseCase,
+    private readonly findByIdUseCase: FindPilotByIdUseCase,
+    private readonly createUseCase: CreatePilotUseCase,
+    private readonly updateUseCase: UpdatePilotUseCase,
+    private readonly deleteUseCase: DeletePilotUseCase,
+
+
+  ) { }
 
   findAll = async (req: Request, res: Response) => {
 
@@ -26,6 +37,63 @@ export class PilotController {
       res.status(500).json({
         message: "Something went wrong while getting data, try latter.",
       });
+    }
+  };
+
+  findById = async (req: Request, res: Response) => {
+
+    try {
+      const id = parseInt(req.params.id);
+      const pilot = await this.findByIdUseCase.run(id);
+      if (!pilot) {
+        res.status(404).json({ message: "Pilot not found." });
+        return;
+      }
+      res.status(200).json(pilot);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: "Something went wrong while fetching the pilot.",
+      });
+    }
+  };
+
+  create = async (req: Request, res: Response) => {
+    try {
+      const pilot = await this.createUseCase.run(req.body);
+      res.status(201).json(pilot);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Error creating pilot." });
+    }
+  };
+
+  update = async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updatedPilot = await this.updateUseCase.run(id, req.body);
+      if (!updatedPilot) {
+        res.status(404).json({ message: "Pilot not found" });
+        return;
+      }
+      res.status(200).json(updatedPilot);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Error updating pilot." });
+    }
+  };
+
+  delete = async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      const deleted = await this.deleteUseCase.run(id);
+      if (!deleted)
+        res.status(404).json({ message: "Pilot not found" });
+      res.status(200).send({message: "Pilot deleted"});
+      return;
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Error deleting pilot." });
     }
   };
 

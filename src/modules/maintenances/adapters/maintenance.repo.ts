@@ -19,4 +19,22 @@ export class MaintenancePgRepo implements MaintenanceRepo {
     return { maintenances, total };
   }
 
+  async findById(id: number): Promise<MaintenanceEntity | null> {
+          return this.repository.findOneBy({ id });
+      }
+  
+      async create(pilot: MaintenanceEntity): Promise<MaintenanceEntity> {
+          return this.repository.save(pilot);
+      }
+  
+      async update(id: number, pilot: Partial<MaintenanceEntity>): Promise<MaintenanceEntity | null> {
+          await this.repository.update(id, pilot);
+          return this.repository.findOneBy({ id });
+      }
+  
+      async delete(id: number): Promise<boolean> {
+          const result = await this.repository.delete(id);
+          return result.affected !== 0;
+      }
+
 }

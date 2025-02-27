@@ -8,6 +8,9 @@ export class AirplaneEntity {
   id: number;
 
   @Column({ type: "varchar", length: 100, nullable: false })
+  name: string; 
+
+  @Column({ type: "varchar", length: 100, nullable: false })
   modelYear: string; 
 
   @Column({ type: "varchar", length: 100, nullable: false })
