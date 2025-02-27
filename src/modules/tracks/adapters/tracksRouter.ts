@@ -8,7 +8,14 @@ export default class TrackRouter {
     const router = Router();
     router
     .route("/tracks")
-    .get(this.trackController.findAll);
+    .get(this.trackController.findAll)
+    .post(this.trackController.create);
+
+    router
+    .route("/tracks/:id")
+    .get(this.trackController.findById)
+    .put(this.trackController.update)
+    .delete(this.trackController.delete)
 
     return router;
   }

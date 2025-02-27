@@ -8,7 +8,14 @@ export default class PilotRouter {
     const router = Router();
     router
     .route("/pilots")
-    .get(this.pilotController.findAll);
+    .get(this.pilotController.findAll)
+    .post(this.pilotController.create);
+
+    router
+    .route("/pilots/:id")
+    .get(this.pilotController.findById)
+    .put(this.pilotController.update)
+    .delete(this.pilotController.delete)
 
     return router;
   }

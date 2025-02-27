@@ -8,7 +8,14 @@ export default class MaintenanceRouter {
     const router = Router();
     router
     .route("/maintenances")
-    .get(this.maintenanceController.findAll);
+    .get(this.maintenanceController.findAll)
+    .post(this.maintenanceController.create);
+
+    router
+    .route("/maintenances/:id")
+    .get(this.maintenanceController.findById)
+    .put(this.maintenanceController.update)
+    .delete(this.maintenanceController.delete)
 
     return router;
   }

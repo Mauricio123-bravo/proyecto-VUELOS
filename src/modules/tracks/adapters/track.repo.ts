@@ -17,4 +17,21 @@ export class TrackPgRepo implements TrackRepo {
 
     return { tracks, total };
   }
+  async findById(id: number): Promise<TrackEntity | null> {
+    return this.repository.findOneBy({ id });
+  }
+
+  async create(track: TrackEntity): Promise<TrackEntity> {
+    return this.repository.save(track);
+  }
+
+  async update(id: number, track: Partial<TrackEntity>): Promise<TrackEntity | null> {
+    await this.repository.update(id, track);
+    return this.repository.findOneBy({ id });
+  }
+
+  async delete(id: number): Promise<boolean> {
+    const result = await this.repository.delete(id);
+    return result.affected !== 0;
+  }
 }
