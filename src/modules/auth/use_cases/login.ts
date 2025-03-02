@@ -1,7 +1,7 @@
 import { SessionRepo } from "../models/session.repository";
-import { EncryptionProvider } from "../models/encryptionProvider";
-import { TokenProvider } from "../models/tokenProvider";
-import { InvalidCredentials } from "../models/credential.error";
+import { EncryptionProvider } from "../models/providers/encryptionProvider";
+import { TokenProvider } from "../models/providers/tokenProvider";
+import { InvalidCredentials } from "../models/errors/credential.error";
 import { UserRepo } from "../../users/models/user.repository";
 import { User } from "../../users/models/user.model";
 

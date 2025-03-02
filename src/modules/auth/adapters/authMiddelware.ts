@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthenticateUseCase } from "../use_cases/authenticate";
-import { ExpiredToken } from "../models/expired.error";
+import { ExpiredToken } from "../models/errors/expired.error";
 
 export class AuthMiddleware {
   constructor(private readonly authUseCase: AuthenticateUseCase) {}

@@ -1,5 +1,5 @@
-import { User } from "../../users/models/user.model";
-import { Token } from "./token.model";
+import { User } from "../../../users/models/user.model";
+import { Token } from "../models/token.model";
 
 export interface TokenProvider {
   /** Return Signed token, expiration is the time in seconds */

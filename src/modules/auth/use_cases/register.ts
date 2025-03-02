@@ -1,6 +1,6 @@
 import { User } from "../../users/models/user.model"
 import { UserRepo } from "../../users/models/user.repository"
-import { EncryptionProvider } from "../models/encryptionProvider"
+import { EncryptionProvider } from "../models/providers/encryptionProvider"
 
 export default class RegisterUseCase {
 	constructor(
