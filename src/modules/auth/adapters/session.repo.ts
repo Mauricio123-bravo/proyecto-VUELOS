@@ -1,9 +1,9 @@
 import { Equal } from "typeorm";
 import { AppDataSource } from "../../../data/pg";
-import { Session } from "../models/session.model";
+import { Session } from "../models/models/session.model";
 import { SessionRepo } from "../models/session.repository";
 import { SessionEntity } from "./session.entity";
-import { InvalidCredentials } from "../models/credential.error";
+import { InvalidCredentials } from "../models/errors/credential.error";
 
 export class SessionPgRepo implements SessionRepo {
   private repository = AppDataSource.getRepository(SessionEntity);

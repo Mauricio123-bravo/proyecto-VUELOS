@@ -1,4 +1,4 @@
-import { User } from "../../users/models/user.model";
+import { User } from "../../../users/models/user.model";
 
 export abstract class Session {
   id: number;

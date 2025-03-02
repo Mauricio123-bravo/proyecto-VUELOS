@@ -1,4 +1,4 @@
-import { Session } from "./session.model";
+import { Session } from "./models/session.model";
 
 export interface SessionRepo {
   save(session: Session): Promise<number>;

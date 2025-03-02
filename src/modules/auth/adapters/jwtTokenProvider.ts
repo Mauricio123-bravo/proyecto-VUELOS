@@ -1,8 +1,8 @@
 import * as jwt from "jsonwebtoken";
-import { TokenProvider } from "../models/tokenProvider";
-import { Token } from "../models/token.model";
-import { ExpiredToken } from "../models/expired.error";
-import { InvalidCredentials } from "../models/credential.error";
+import { TokenProvider } from "../models/providers/tokenProvider";
+import { Token } from "../models/models/token.model";
+import { ExpiredToken } from "../models/errors/expired.error";
+import { InvalidCredentials } from "../models/errors/credential.error";
 import { User } from "../../users/models/user.model";
 import { SECRET } from "../../../config/vars";
 

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import LoginUseCase from "../use_cases/login";
 import RegisterUseCase from "../use_cases/register";
-import { InvalidCredentials } from "../models/credential.error";
+import { InvalidCredentials } from "../models/errors/credential.error";
 import { User } from "../../users/models/user.model";
 
 export class AuthController {

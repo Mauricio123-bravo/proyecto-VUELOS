@@ -1,5 +1,5 @@
 import { SessionRepo } from "../models/session.repository";
-import { TokenProvider } from "../models/tokenProvider";
+import { TokenProvider } from "../models/providers/tokenProvider";
 
 export class AuthenticateUseCase {
   constructor(
