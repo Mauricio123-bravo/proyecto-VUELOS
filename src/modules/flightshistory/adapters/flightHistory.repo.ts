@@ -19,4 +19,24 @@ export class FlightHistoryPgRepo implements FlightHistoryRepo {
 
     return { flightsHistory, total };
   }
+
+
+  async findById(id: number): Promise<FlightHistoryEntity | null> {
+    return this.repository.findOneBy({ id });
+  }
+
+  async create(flightHistory: FlightHistoryEntity): Promise<FlightHistoryEntity> {
+    return this.repository.save(flightHistory);
+  }
+
+  async update(id: number, flightHistory: Partial<FlightHistoryEntity>): Promise<FlightHistoryEntity | null> {
+    await this.repository.update(id, flightHistory);
+    return this.repository.findOneBy({ id });
+  }
+
+  async delete(id: number): Promise<boolean> {
+    const result = await this.repository.delete(id);
+    return result.affected !== 0;
+  }
+
 }

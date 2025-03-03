@@ -19,5 +19,23 @@ export class AirplanePgRepo implements AirplaneRepo {
     return { airplanes, total };
   }
 
+  async findById(id: number): Promise<AirplaneEntity | null> {
+    return this.repository.findOneBy({ id });
+  }
+
+  async create(airplane: AirplaneEntity): Promise<AirplaneEntity> {
+    return this.repository.save(airplane);
+  }
+
+  async update(id: number, airplane: Partial<AirplaneEntity>): Promise<AirplaneEntity | null> {
+    await this.repository.update(id, airplane);
+    return this.repository.findOneBy({ id });
+  }
+
+  async delete(id: number): Promise<boolean> {
+    const result = await this.repository.delete(id);
+    return result.affected !== 0;
+  }
+
 
 }

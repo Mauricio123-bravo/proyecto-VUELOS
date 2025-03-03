@@ -64,7 +64,7 @@ export class PilotController {
       res.status(201).json(pilot);
     } catch (err) {
       console.error(err);
-      res.status(500).json({ message: "Error creating pilot." });
+      res.status(400).json({ message: "Error creating pilot." });
     }
   };
 
@@ -87,13 +87,15 @@ export class PilotController {
     try {
       const id = parseInt(req.params.id);
       const deleted = await this.deleteUseCase.run(id);
-      if (!deleted)
+      if (!deleted) {
         res.status(404).json({ message: "Pilot not found" });
-      res.status(200).send({message: "Pilot deleted"});
-      return;
+        return;
+      }
+      res.status(200).send({ message: "Pilot deleted" });
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Error deleting pilot." });
+
     }
   };
 

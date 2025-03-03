@@ -63,7 +63,7 @@ export class TrackController {
       res.status(201).json(track);
     } catch (err) {
       console.error(err);
-      res.status(500).json({ message: "Error creating track." });
+      res.status(400).json({ message: "Error creating track." });
     }
   };
 
@@ -86,13 +86,15 @@ export class TrackController {
     try {
       const id = parseInt(req.params.id);
       const deleted = await this.deleteUseCase.run(id);
-      if (!deleted)
+      if (!deleted) {
         res.status(404).json({ message: "track not found" });
+        return;
+      }
       res.status(200).send({ message: "track deleted" });
-      return;
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Error deleting track." });
+
     }
   };
 

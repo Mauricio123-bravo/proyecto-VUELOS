@@ -19,4 +19,23 @@ export class LocatedPgRepo implements LocatedRepo {
 
     return { located, total };
   }
+
+  async findById(id: number): Promise<LocatedEntity | null> {
+    return this.repository.findOneBy({ id });
+  }
+
+  async create(located: LocatedEntity): Promise<LocatedEntity> {
+    return this.repository.save(located);
+  }
+
+  async update(id: number, located: Partial<LocatedEntity>): Promise<LocatedEntity | null> {
+    await this.repository.update(id, located);
+    return this.repository.findOneBy({ id });
+  }
+
+  async delete(id: number): Promise<boolean> {
+    const result = await this.repository.delete(id);
+    return result.affected !== 0;
+  }
+
 }
