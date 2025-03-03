@@ -1,5 +1,6 @@
 import { SessionRepo } from "../models/session.repository";
 import { TokenProvider } from "../models/providers/tokenProvider";
+import { REFRESH_EXPIRATION_TIME } from "../../../config/vars";
 
 export class AuthenticateUseCase {
   constructor(
@@ -22,7 +23,6 @@ export class AuthenticateUseCase {
       throw new Error("Forbidden");
     }
 
-    const time = 60 * 60;
-    return this.tokenProvider.generateToken(session.user!, time);
+    return this.tokenProvider.generateToken(session.user!, REFRESH_EXPIRATION_TIME);
   }
 }

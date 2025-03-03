@@ -3,6 +3,7 @@ import LoginUseCase from "../use_cases/login";
 import RegisterUseCase from "../use_cases/register";
 import { InvalidCredentials } from "../models/errors/credential.error";
 import { User } from "../../users/models/user.model";
+import { ACCESS_EXPIRATION_TIME, REFRESH_EXPIRATION_TIME } from "../../../config/vars";
 
 export class AuthController {
   constructor(
@@ -14,15 +15,16 @@ export class AuthController {
     const user: User = req.body;
     this.loginUseCase
       .login(user, req.ip!)
-      .then((data) => {
-        res.cookie("Authorization", data.access, {
-          expires: new Date(Date.now() + 60 * 60),
+      .then(({access, refresh}) => {
+        res.cookie("Authorization", access, {
+          expires: new Date(Date.now() + ACCESS_EXPIRATION_TIME * 1000),
           secure: true,
           sameSite: "none",
           httpOnly: true,
         });
-        res.cookie("X-Refresh-Token", data.refresh, {
-          expires: new Date(Date.now() + 60 * 60 * 5),
+
+        res.cookie("X-Refresh-Token", refresh, {
+          expires: new Date(Date.now() + REFRESH_EXPIRATION_TIME * 1000),
           secure: true,
           sameSite: "none",
           httpOnly: true,

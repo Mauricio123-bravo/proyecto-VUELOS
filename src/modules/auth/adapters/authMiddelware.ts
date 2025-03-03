@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthenticateUseCase } from "../use_cases/authenticate";
 import { ExpiredToken } from "../models/errors/expired.error";
+import { REFRESH_EXPIRATION_TIME } from "../../../config/vars";
 
 export class AuthMiddleware {
   constructor(private readonly authUseCase: AuthenticateUseCase) {}
@@ -11,6 +12,8 @@ export class AuthMiddleware {
     const ip = req.ip!;
 
     if (!token || !refresh) {
+        console.log("tokens not provided");
+        
       res.status(401).json({ message: "invalid credentials" });
       return;
     }
@@ -22,7 +25,7 @@ export class AuthMiddleware {
       if (error instanceof ExpiredToken) {
         token = this.authUseCase.getAccessToken(ip!, refresh);
         res.cookie("Authorization", token, {
-          expires: new Date(Date.now() + 60 * 60),
+          expires: new Date(Date.now() + REFRESH_EXPIRATION_TIME),
           secure: true,
           sameSite: "none",
           httpOnly: true,
