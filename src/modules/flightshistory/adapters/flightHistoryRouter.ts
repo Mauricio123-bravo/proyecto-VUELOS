@@ -8,7 +8,14 @@ export default class FlightHistoryRouter {
     const router = Router();
     router
     .route("/flightsHistory")
-    .get(this.flightHistoryController.findAll);
+    .get(this.flightHistoryController.findAll)
+    .post(this.flightHistoryController.create);
+
+    router
+    .route("/flightsHistory/:id")
+    .get(this.flightHistoryController.findById)
+    .put(this.flightHistoryController.update)
+    .delete(this.flightHistoryController.delete);
 
     return router;
   }

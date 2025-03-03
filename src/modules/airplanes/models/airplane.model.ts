@@ -5,7 +5,7 @@ export abstract class Airplane {
     id: number;
     name:string;
     modelYear: string;
-    capacity: string;
+    capacity: number;
     status: boolean;
     flights: Flight[]
     maintenances: Maintenance[] 
