@@ -4,6 +4,7 @@ import { TokenProvider } from "../models/providers/tokenProvider";
 import { InvalidCredentials } from "../models/errors/credential.error";
 import { UserRepo } from "../../users/models/user.repository";
 import { User } from "../../users/models/user.model";
+import { ACCESS_EXPIRATION_TIME, REFRESH_EXPIRATION_TIME } from "../../../config/vars";
 
 export default class LoginUseCase {
   constructor(
@@ -30,12 +31,9 @@ export default class LoginUseCase {
       throw new InvalidCredentials();
     }
 
-    const timeAccess = 1;
-    const timeRefresh = 60 * 60 * 5;
-
     try {
-      const refresh = this.token.generateToken(user, timeAccess);
-      const access = this.token.generateToken(user, timeRefresh);
+      const refresh = this.token.generateToken(user, REFRESH_EXPIRATION_TIME);
+      const access = this.token.generateToken(user, ACCESS_EXPIRATION_TIME);
 
       await this.sessionRepository.save({
         id: 0,
@@ -44,6 +42,7 @@ export default class LoginUseCase {
         revoked: false,
         ipAddress: ip,
       });
+
       return { access, refresh };
     } catch (err) {
       console.log("error saving session");
