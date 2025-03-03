@@ -8,10 +8,10 @@ export class LocatedEntity{
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: "timestamp" ,nullable: false })
+    @Column({ type: "double precision" ,nullable: false })
     longitude: number;
     
-    @Column({ type: "timestamp",  nullable: false })
+    @Column({ type: "double precision",  nullable: false })
     latitude: number;
 
     @OneToMany(() => FlightEntity, (flight) => flight.origin)

@@ -8,20 +8,20 @@ export class AirplaneEntity {
   id: number;
 
   @Column({ type: "varchar", length: 100, nullable: false })
-  name: string; 
+  name: string;
 
   @Column({ type: "varchar", length: 100, nullable: false })
-  modelYear: string; 
+  modelYear: string;
 
-  @Column({ type: "varchar", length: 100, nullable: false })
-  capacity: string; 
+  @Column({ type: "int", nullable: false })
+  capacity: number;
 
   @Column({ type: "boolean", nullable: false })
-  status: boolean; 
+  status: boolean;
 
   @OneToMany(() => FlightEntity, (flight) => flight.airplane)
-  flights: FlightEntity[]; 
+  flights: FlightEntity[];
 
   @OneToMany(() => MaintenanceEntity, (maintenance) => maintenance.airplane)
-  maintenances: MaintenanceEntity[]; 
+  maintenances: MaintenanceEntity[];
 }

@@ -12,8 +12,8 @@ export class PilotEntity{
     @Column({ type: "varchar", length: 100, nullable: false })
     licence: string;
 
-    @Column({ type: "varchar", length: 100, nullable: false })
-    experienceYears: string;
+    @Column({ type: "int", nullable: false })
+    experienceYears: number;
 
     @Column({ type: "varchar", length: 100, nullable: false })
     rank: string;
