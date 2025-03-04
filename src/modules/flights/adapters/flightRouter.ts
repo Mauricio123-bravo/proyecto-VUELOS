@@ -8,12 +8,12 @@ export default class FlightRouter {
     const router = Router();
 
     router
-      .route("")
+      .route("/flights")
       .get(this.flightController.findAll)
       .post(this.flightController.create);
 
     router
-      .route(":id")
+      .route("/flights/:id")
       .get(this.flightController.findById)
       .put(this.flightController.update)
       .delete(this.flightController.delete);

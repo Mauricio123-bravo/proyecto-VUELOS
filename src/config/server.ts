@@ -1,4 +1,4 @@
-import express, { Application } from "express";
+import express, { Application, Router } from "express";
 import { AppDataSource } from "../data/pg";
 import { PORT } from "./vars";
 import { flightRouter } from "../modules/flights/dependencies";
@@ -48,14 +48,22 @@ export class App {
   }
 
   private static initRoutes() {
-    this.app.use("/flights", authMiddleware.authenticate, flightRouter.getRoutes());
-    this.app.use(flightHistoryRouter.getRoutes());
-    this.app.use(locatedRouter.getRoutes());
-    this.app.use(airplaneRouter.getRoutes());
-    this.app.use(maintenanceRouter.getRoutes());
-    this.app.use(pilotRouter.getRoutes());
-    this.app.use(userRouter.getRoutes());
-    this.app.use(trackRouter.getRoutes());
+    const api = Router({});
+
+    // Private routes
+    api.use(flightRouter.getRoutes());
+    api.use(flightHistoryRouter.getRoutes());
+    api.use(locatedRouter.getRoutes());
+    api.use(airplaneRouter.getRoutes());
+    api.use(maintenanceRouter.getRoutes());
+    api.use(pilotRouter.getRoutes());
+    api.use(userRouter.getRoutes());
+    api.use(trackRouter.getRoutes());
+
+    this.app.use("/api", authMiddleware.authenticate);
+    this.app.use("/api", api);
+
+    // Public routes
     this.app.use(authRouter.getRoutes());
   }
 }
