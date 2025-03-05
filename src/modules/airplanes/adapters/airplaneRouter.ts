@@ -1,11 +1,20 @@
 import { Router } from "express";
 import { AirplaneController } from "./airplaneController";
+import { AuthMiddleware } from "../../auth/adapters/authMiddelware";
+import { UserRole } from "../../users/models/userRol.model";
 
 export default class AirplaneRouter {
-  constructor(private readonly airplaneController: AirplaneController) { }
+  constructor(private readonly airplaneController: AirplaneController,
+    private readonly authMiddleware: AuthMiddleware
+  ) { }
 
   public getRoutes(): Router {
     const router = Router();
+    
+    router.use(
+      this.authMiddleware.authorizeRole([UserRole.ADMIN])
+    );
+
     router
       .route("/airplanes")
       .get(this.airplaneController.findAll)

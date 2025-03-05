@@ -1,3 +1,4 @@
+import { authMiddleware } from "../auth/dependencies";
 import { FlightPgRepo } from "./adapters/flight.repo";
 import { FlightController } from "./adapters/flightController";
 import FlightRouter from "./adapters/flightRouter";
@@ -28,6 +29,6 @@ const deleteFlightsUseCase: DeleteFlightUseCase = new DeleteFlightUseCase(
 const flightController: FlightController = new FlightController(
   findFlightsUseCase, findByIdFlightsUseCase, createFlightsUseCase, updateFlightsUseCase, deleteFlightsUseCase
 );
-const flightRouter: FlightRouter = new FlightRouter(flightController);
+const flightRouter: FlightRouter = new FlightRouter(flightController, authMiddleware);
 
 export { flightRouter };

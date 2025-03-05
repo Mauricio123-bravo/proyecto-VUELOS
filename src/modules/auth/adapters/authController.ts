@@ -57,4 +57,6 @@ export class AuthController {
           .json({ message: "Can't create the user, check your data." });
       });
   };
+
+  // TODO: controlador de changeRol
 }

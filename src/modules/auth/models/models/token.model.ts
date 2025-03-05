@@ -3,4 +3,5 @@ export abstract class Token {
   email: string;
   userId: number
   creationDate: Date;
+  role: string;
 }

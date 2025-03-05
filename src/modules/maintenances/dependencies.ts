@@ -1,3 +1,4 @@
+import { authMiddleware } from "../auth/dependencies";
 import { MaintenancePgRepo } from "./adapters/maintenance.repo";
 import { MaintenanceController } from "./adapters/maintenanceController";
 import MaintenanceRouter from "./adapters/maintenanceRouter";
@@ -29,6 +30,6 @@ const maintenanceController: MaintenanceController = new MaintenanceController(
     findMaintenanceUseCase, findByIdMaintenanceUseCase, createMaintenanceUseCase, updateMaintenanceUseCase, deleteMaintenanceUseCase
 );
 
-const maintenanceRouter: MaintenanceRouter = new MaintenanceRouter(maintenanceController);
+const maintenanceRouter: MaintenanceRouter = new MaintenanceRouter(maintenanceController, authMiddleware);
 
 export { maintenanceRouter };

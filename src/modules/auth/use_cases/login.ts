@@ -45,6 +45,7 @@ export default class LoginUseCase {
 
       return { access, refresh };
     } catch (err) {
+      console.log(err)
       console.log("error saving session");
       return { access: "empty", refresh: "empty" };
     }

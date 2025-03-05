@@ -1,3 +1,4 @@
+import { authMiddleware } from "../auth/dependencies";
 import { UserPgRepo } from "./adapters/user.repo";
 import { UserController } from "./adapters/userController";
 import UserRouter from "./adapters/userRouter";
@@ -11,6 +12,6 @@ const findUsersUseCase: FindUsersUseCase = new FindUsersUseCase(
 const userController: UserController = new UserController(
     findUsersUseCase,
 );
-const userRouter: UserRouter= new UserRouter(userController);
+const userRouter: UserRouter= new UserRouter(userController, authMiddleware);
 
 export {userRepository, userRouter };

@@ -1,5 +1,6 @@
 import { User } from "../../users/models/user.model"
 import { UserRepo } from "../../users/models/user.repository"
+import { UserRole } from "../../users/models/userRol.model"
 import { EncryptionProvider } from "../models/providers/encryptionProvider"
 
 export default class RegisterUseCase {
@@ -10,6 +11,7 @@ export default class RegisterUseCase {
 
 	async register(user: User): Promise<number> {
 		user.password = await this.encryption.hashPassword(user.password)
+		user.role = UserRole.USER
 		return this.userRepository.save(user)
 	}
 }

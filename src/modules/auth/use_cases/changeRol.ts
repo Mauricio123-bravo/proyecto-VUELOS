@@ -1,0 +1,2 @@
+//TODO: hacer el contrusctor e inyectar el repositorio de user el de edit
+//TODO: crear una funcion que reciba el usuario, reciba el rol y asigne el rol al usuario y lo guarde en el repositorio con edit

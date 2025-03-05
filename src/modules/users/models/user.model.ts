@@ -1,6 +1,11 @@
+import { UserFlight } from "../../userVuelos/models/userFlight.model";
+import { UserRole } from "./userRol.model";
+
 export class User {
   id: number;
   email: string;
   username: string;
   password: string;
+  role: UserRole;
+  userFlight: UserFlight[]
 }

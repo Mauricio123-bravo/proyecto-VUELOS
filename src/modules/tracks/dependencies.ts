@@ -1,3 +1,4 @@
+import { authMiddleware } from "../auth/dependencies";
 import { TrackPgRepo } from "./adapters/track.repo";
 import { TrackController } from "./adapters/trackController";
 import TrackRouter from "./adapters/tracksRouter";
@@ -28,6 +29,6 @@ const deleteTracksUseCase: DeleteTrackUseCase = new DeleteTrackUseCase(
 const trackController: TrackController = new TrackController(
     findTracksUseCase, findByIdTracksUseCase, createTracksUseCase, updateTracksUseCase, deleteTracksUseCase
 );
-const trackRouter: TrackRouter = new TrackRouter(trackController);
+const trackRouter: TrackRouter = new TrackRouter(trackController, authMiddleware);
 
 export { trackRouter };
