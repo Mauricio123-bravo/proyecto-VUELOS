@@ -3,7 +3,6 @@ import { AppDataSource } from "../data/pg";
 import { PORT } from "./vars";
 import { flightRouter } from "../modules/flights/dependencies";
 import morgan from "morgan";
-import { flightHistoryRouter } from "../modules/flightshistory/dependencies";
 import { locatedRouter } from "../modules/located/dependencies";
 import { airplaneRouter } from "../modules/airplanes/dependencies";
 import { maintenanceRouter } from "../modules/maintenances/dependencies";
@@ -12,7 +11,6 @@ import { userRouter } from "../modules/users/dependencies";
 import cors from "cors";
 import { trackRouter } from "../modules/tracks/dependencies";
 import { authMiddleware, authRouter } from "../modules/auth/dependencies";
-import { AuthMiddleware } from "../modules/auth/adapters/authMiddelware";
 
 export class App {
   private static app: Application = express();
@@ -52,7 +50,6 @@ export class App {
 
     // Private routes
     api.use(flightRouter.getRoutes());
-    api.use(flightHistoryRouter.getRoutes());
     api.use(locatedRouter.getRoutes());
     api.use(airplaneRouter.getRoutes());
     api.use(maintenanceRouter.getRoutes());

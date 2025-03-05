@@ -1,21 +1,33 @@
 import { Router } from "express";
 import { PilotController } from "./pilotController";
+import { AuthMiddleware } from "../../auth/adapters/authMiddelware";
+import { UserRole } from "../../users/models/userRol.model";
 
 export default class PilotRouter {
-  constructor(private readonly pilotController: PilotController) { }
+  constructor(
+    private readonly pilotController: PilotController,
+    private readonly authMiddleware: AuthMiddleware
+  ) { }
 
   public getRoutes(): Router {
     const router = Router();
+
     router
       .route("/pilots")
-      .get(this.pilotController.findAll)
-      .post(this.pilotController.create);
+      .get(
+        this.authMiddleware.authorizeRole([UserRole.ADMIN, UserRole.PILOT]),
+        this.pilotController.findAll
+      )
+      .post(this.authMiddleware.authorizeRole([UserRole.ADMIN]), this.pilotController.create);
 
     router
       .route("/pilots/:id")
-      .get(this.pilotController.findById)
-      .put(this.pilotController.update)
-      .delete(this.pilotController.delete)
+      .get(
+        this.authMiddleware.authorizeRole([UserRole.ADMIN, UserRole.PILOT]),
+        this.pilotController.findById
+      )
+      .put(this.authMiddleware.authorizeRole([UserRole.ADMIN]), this.pilotController.update)
+      .delete(this.authMiddleware.authorizeRole([UserRole.ADMIN]), this.pilotController.delete);
 
     return router;
   }

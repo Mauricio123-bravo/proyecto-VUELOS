@@ -5,4 +5,5 @@ export interface UserRepo {
   findByEmail(email: string): Promise<User | null>;
   save(user: User): Promise<number>;
   findAllPaginated(limit: number, offset: number): Promise<{ users: User[], total: number }>;
+  //TODO: edit recibe un usuario
 }

@@ -1,3 +1,4 @@
+import { authMiddleware } from "../auth/dependencies";
 import { LocatedPgRepo } from "./adapters/located.repo";
 import { LocatedController } from "./adapters/locatedController";
 import LocatedRouter from "./adapters/locatedRouter";
@@ -28,6 +29,6 @@ const deleteLocatedUseCase: DeleteLocatedUseCase = new DeleteLocatedUseCase(
 const locatedController: LocatedController = new LocatedController(
     findLocatedUseCase, findByIdLocatedUseCase, createLocatedUseCase, updateLocatedUseCase, deleteLocatedUseCase
 );
-const locatedRouter: LocatedRouter = new LocatedRouter(locatedController);
+const locatedRouter: LocatedRouter = new LocatedRouter(locatedController, authMiddleware);
 
 export { locatedRouter };

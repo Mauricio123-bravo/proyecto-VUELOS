@@ -28,6 +28,6 @@ const authUseCase = new AuthenticateUseCase(sessionRepo, tokenProvider)
 
 const authController = new AuthController(loginUseCase, registerUseCase);
 const authRouter = new AuthRouter(authController)
-const authMiddleware = new AuthMiddleware(authUseCase)
+const authMiddleware = new AuthMiddleware(authUseCase,tokenProvider)
 
 export { authRouter, authMiddleware };

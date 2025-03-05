@@ -1,3 +1,4 @@
+import { authMiddleware } from "../auth/dependencies";
 import { PilotPgRepo } from "./adapters/pilot.repo";
 import { PilotController } from "./adapters/pilotController";
 import PilotRouter from "./adapters/pilotsRouter";
@@ -28,6 +29,6 @@ const deletePilotsUseCase: DeletePilotUseCase = new DeletePilotUseCase(
 const pilotController: PilotController = new PilotController(
     findPilotsUseCase, findByIdPilotsUseCase, createPilotsUseCase, updatePilotsUseCase, deletePilotsUseCase
 );
-const pilotRouter: PilotRouter = new PilotRouter(pilotController);
+const pilotRouter: PilotRouter = new PilotRouter(pilotController, authMiddleware);
 
 export { pilotRouter };

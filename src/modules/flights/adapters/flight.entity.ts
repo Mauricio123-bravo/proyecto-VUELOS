@@ -1,10 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { AirplaneEntity } from "../../airplanes/adapters/airplane.entity";
 import { PilotEntity } from "../../pilots/adapters/pilot.entity";
 import { TrackEntity } from "../../tracks/adapters/track.entity";
-import { FlightHistoryEntity } from "../../flightshistory/adapters/flightHistory.entity";
 import { LocatedEntity } from "../../located/adapters/located.entity";
-import { Located } from "../../located/models/located.model";
+import { UserFlightEntity } from "../../userVuelos/adapters/userFlight.entity";
 
 @Entity("flights")
 export class FlightEntity {
@@ -32,10 +31,6 @@ export class FlightEntity {
   @JoinColumn({ name: "track_id" })
   track: TrackEntity;
 
-  @OneToOne(() => FlightHistoryEntity, (flightHistory) => flightHistory.flight)
-  flightHistory: FlightHistoryEntity;
-
-
   @ManyToOne(() => LocatedEntity, (located) => located.flightsOrigin)
   @JoinColumn({ name: "origin_id" })
   origin: LocatedEntity;
@@ -44,5 +39,8 @@ export class FlightEntity {
   @ManyToOne(() => LocatedEntity, (located) => located.flightsDestination)
   @JoinColumn({ name: "destination_id" })
   destination: LocatedEntity;
-  
+
+  @OneToMany(() => UserFlightEntity, (userFlight) => userFlight.flight)
+  userFlight: UserFlightEntity[];
+
 }

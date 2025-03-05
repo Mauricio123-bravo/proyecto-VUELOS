@@ -12,7 +12,7 @@ export class SessionEntity {
   @Column({ default: false })
   revoked: boolean = false;
 
-  @Column({ length: 15 })
+  @Column({ length: 50 })
   ipAddress: string;
 
   @ManyToOne(() => UserEntity, (user) => user.id)

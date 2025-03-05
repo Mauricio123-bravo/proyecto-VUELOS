@@ -25,7 +25,7 @@ export default class JWTProvider implements TokenProvider {
 
   generateToken(user: User, expiration: number): string {
 
-    return jwt.sign({ id: user.id, email: user.email }, SECRET, {
+    return jwt.sign({ id: user.id, email: user.email,  role: user.role }, SECRET, {
       expiresIn: `${expiration}s`,
     });
   }
