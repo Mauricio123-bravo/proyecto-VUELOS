@@ -15,8 +15,12 @@ export class UserPgRepo implements UserRepo {
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    const user =  await this.repository.findOneBy({ email: Equal(email) });
+    const user = await this.repository.findOneBy({ email: Equal(email) });
     return user
+  }
+
+  async findById(id: number): Promise<UserEntity | null> {
+    return this.repository.findOneBy({ id });
   }
 
   async findAllPaginated(limit: number, offset: number): Promise<{ users: UserEntity[], total: number }> {
@@ -26,5 +30,15 @@ export class UserPgRepo implements UserRepo {
     });
 
     return { users, total };
+  }
+
+  async update(user: User): Promise<void> {
+    const userToUpdate = await this.repository.findOneBy({ id: user.id });
+
+    if (!userToUpdate) {
+      throw new Error("User Not Found")
+    }
+
+    await this.repository.update({ id: user.id }, user);
   }
 }

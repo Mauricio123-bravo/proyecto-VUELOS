@@ -11,6 +11,7 @@ import AuthRouter from "./adapters/authRoutes";
 import { userRepository } from "../users/dependencies";
 import { AuthMiddleware } from "./adapters/authMiddelware";
 import { AuthenticateUseCase } from "./use_cases/authenticate";
+import { ChangeRoleUseCase } from "./use_cases/changeRol";
 
 const sessionRepo: SessionRepo = new SessionPgRepo();
 const encryptionProvider: EncryptionProvider = new BcryptProvider();
@@ -25,9 +26,11 @@ const loginUseCase = new LoginuseCase(
 
 const registerUseCase = new RegisterUseCase(userRepository, encryptionProvider);
 const authUseCase = new AuthenticateUseCase(sessionRepo, tokenProvider)
+const changeUserRoleUseCase = new ChangeRoleUseCase(userRepository)
 
-const authController = new AuthController(loginUseCase, registerUseCase);
-const authRouter = new AuthRouter(authController)
-const authMiddleware = new AuthMiddleware(authUseCase,tokenProvider)
+const authController = new AuthController(loginUseCase, registerUseCase, changeUserRoleUseCase);
+
+const authMiddleware = new AuthMiddleware(authUseCase, tokenProvider)
+const authRouter = new AuthRouter(authController, authMiddleware)
 
 export { authRouter, authMiddleware };
