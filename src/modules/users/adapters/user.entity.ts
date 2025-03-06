@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserRole } from "../models/userRol.model";
-import { UserFlightEntity } from "../../userVuelos/adapters/userFlight.entity";
+import { UserFlightEntity } from "../../userFlights/adapters/userFlight.entity";
+
 
 @Entity("users")
 export class UserEntity {

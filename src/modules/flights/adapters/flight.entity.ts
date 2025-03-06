@@ -3,7 +3,7 @@ import { AirplaneEntity } from "../../airplanes/adapters/airplane.entity";
 import { PilotEntity } from "../../pilots/adapters/pilot.entity";
 import { TrackEntity } from "../../tracks/adapters/track.entity";
 import { LocatedEntity } from "../../located/adapters/located.entity";
-import { UserFlightEntity } from "../../userVuelos/adapters/userFlight.entity";
+import { UserFlightEntity } from "../../userFlights/adapters/userFlight.entity";
 
 @Entity("flights")
 export class FlightEntity {

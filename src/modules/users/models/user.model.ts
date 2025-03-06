@@ -1,4 +1,4 @@
-import { UserFlight } from "../../userVuelos/models/userFlight.model";
+import { UserFlight } from "../../userFlights/models/userFlight.model";
 import { UserRole } from "./userRol.model";
 
 export class User {

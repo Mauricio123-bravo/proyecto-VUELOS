@@ -19,6 +19,10 @@ export default class UserRouter {
       .route("/users")
       .get(this.userController.findAll);
 
+    router
+      .route("/users/:id")
+      .get(this.userController.findById);
+
     return router;
   }
 }

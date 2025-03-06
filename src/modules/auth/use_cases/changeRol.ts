@@ -1,2 +1,27 @@
-//TODO: hacer el contrusctor e inyectar el repositorio de user el de edit
-//TODO: crear una funcion que reciba el usuario, reciba el rol y asigne el rol al usuario y lo guarde en el repositorio con edit
+
+import { UserRole } from "../../users/models/userRol.model";
+import { User } from "../../users/models/user.model";
+import { UserRepo } from "../../users/models/user.repository";
+
+export class ChangeRoleUseCase {
+    constructor(private readonly userRepo: UserRepo) { }
+
+    async change(userId: number, newRole: UserRole): Promise<User | null> {
+
+        if (![UserRole.ADMIN, UserRole.PILOT, UserRole.USER].includes(newRole)) {
+            throw new Error("Invalid role");
+        }
+
+        const user = await this.userRepo.findById(userId);
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        user.role = newRole;
+
+
+        await this.userRepo.update(user);
+        user.password=""
+        return user
+    }
+}
