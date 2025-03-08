@@ -21,7 +21,7 @@ export class UserFlightPgRepo implements UserFlightRepo {
         return { userFlight, total };
     }
 
-    async findById(id: number): Promise<UserFlightEntity | null> {
+    async findById(id: string): Promise<UserFlightEntity | null> {
         return this.repository.findOneBy({ id });
     }
 
@@ -29,12 +29,12 @@ export class UserFlightPgRepo implements UserFlightRepo {
         return this.repository.save(userFlight);
     }
 
-    async update(id: number,userFlight: Partial<UserFlightEntity>): Promise<UserFlightEntity | null> {
+    async update(id: string,userFlight: Partial<UserFlightEntity>): Promise<UserFlightEntity | null> {
         await this.repository.update(id, userFlight);
         return this.repository.findOneBy({ id });
     }
 
-    async delete(id: number): Promise<boolean> {
+    async delete(id: string): Promise<boolean> {
         const result = await this.repository.delete(id);
         return result.affected !== 0;
     }

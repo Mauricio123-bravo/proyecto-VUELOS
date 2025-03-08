@@ -10,8 +10,14 @@ export class FlightPgRepo implements FlightRepo {
     return this.repository.find();
   }
 
-  async findAllPaginated(limit: number, offset: number): Promise<{ flights: FlightEntity[], total: number }> {
+  async findAllPaginated(limit: number, offset: number, origin?: number, destination?: number): Promise<{ flights: FlightEntity[], total: number }> {
+
+    const filters: any = {};
+    if (origin) filters.origin = origin;
+    if (destination) filters.destination = destination;
+
     const [flights, total] = await this.repository.findAndCount({
+      where: filters,
       take: limit,  // Límite de registros por página
       skip: offset, // Desde qué registro empezar
     });
