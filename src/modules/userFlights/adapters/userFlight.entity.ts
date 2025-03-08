@@ -5,8 +5,8 @@ import { UserEntity } from "../../users/adapters/user.entity";
 @Entity("userFlights")
 export class UserFlightEntity {
 
-  @PrimaryGeneratedColumn() 
-  id: number;
+  @PrimaryGeneratedColumn("uuid") 
+  id: string;
 
   @ManyToOne(() => FlightEntity, (flight) => flight.userFlight)
   @JoinColumn({ name: "flight_id" })

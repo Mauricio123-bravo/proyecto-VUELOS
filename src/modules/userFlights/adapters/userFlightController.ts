@@ -44,7 +44,7 @@ export class UserFlightController {
   findById = async (req: Request, res: Response) => {
 
     try {
-      const id = parseInt(req.params.id);
+      const id = req.params.id;
       const userFlight = await this.findByIdUseCase.run(id);
       if (!userFlight) {
         res.status(404).json({ message: "userFlight not found." });
@@ -71,7 +71,7 @@ export class UserFlightController {
 
   update = async (req: Request, res: Response) => {
     try {
-      const id = parseInt(req.params.id);
+      const id = req.params.id;
       const updateduserFlight = await this.updateUseCase.run(id, req.body);
       if (!updateduserFlight) {
         res.status(404).json({ message: "userFlight not found" });
@@ -86,7 +86,7 @@ export class UserFlightController {
 
   delete = async (req: Request, res: Response) => {
     try {
-      const id = parseInt(req.params.id);
+      const id = req.params.id;
       const deleted = await this.deleteUseCase.run(id);
       if (!deleted) {
         res.status(404).json({ message: "userFlight not found" });
