@@ -3,8 +3,12 @@ import { EncryptionProvider } from "../models/providers/encryptionProvider";
 import { TokenProvider } from "../models/providers/tokenProvider";
 import { InvalidCredentials } from "../models/errors/credential.error";
 import { UserRepo } from "../../users/models/user.repository";
-import { User } from "../../users/models/user.model";
-import { ACCESS_EXPIRATION_TIME, REFRESH_EXPIRATION_TIME } from "../../../config/vars";
+import { User, UserResponse } from "../../users/models/user.model";
+import {
+  ACCESS_EXPIRATION_TIME,
+  REFRESH_EXPIRATION_TIME,
+} from "../../../config/vars";
+import { ServerError } from "../../shared/errors/server.error";
 
 export default class LoginUseCase {
   constructor(
@@ -14,20 +18,17 @@ export default class LoginUseCase {
     private readonly token: TokenProvider,
   ) {}
 
-  async login({
-    email,
-    password,
-  }: User, ip: string): Promise<{ access: string; refresh: string }> {
+  async login(
+    { email, password }: User,
+    ip: string,
+  ): Promise<{ access: string; refresh: string; userDB: UserResponse }> {
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
-      console.log("user not found");
       throw new InvalidCredentials();
     }
 
     const valid = this.encryption.verifyHash(password, user.password);
     if (!valid) {
-      console.log("invalid hash");
-
       throw new InvalidCredentials();
     }
 
@@ -42,12 +43,12 @@ export default class LoginUseCase {
         revoked: false,
         ipAddress: ip,
       });
+      const { password: _password, ...userResponse } = user;
 
-      return { access, refresh };
+      return { access, refresh, userDB: userResponse };
     } catch (err) {
-      console.log(err)
-      console.log("error saving session");
-      return { access: "empty", refresh: "empty" };
+      console.log("error saving session: ", err);
+      throw new ServerError();
     }
   }
 }
