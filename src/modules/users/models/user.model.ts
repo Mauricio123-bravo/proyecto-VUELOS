@@ -7,5 +7,12 @@ export class User {
   username: string;
   password: string;
   role: UserRole;
-  userFlight: UserFlight[]
+  userFlight: UserFlight[];
+}
+
+export abstract class UserResponse {
+  id: number;
+  email: string;
+  username: string;
+  role: UserRole;
 }
