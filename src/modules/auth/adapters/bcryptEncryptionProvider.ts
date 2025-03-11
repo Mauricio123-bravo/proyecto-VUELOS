@@ -1,4 +1,4 @@
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 import { EncryptionProvider } from "../models/providers/encryptionProvider";
 
 export default class BcryptProvider implements EncryptionProvider {
