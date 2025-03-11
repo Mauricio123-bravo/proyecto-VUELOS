@@ -1,5 +1,7 @@
 
 import { AppDataSource } from "../../../data/pg";
+import { FlightEntity } from "../../flights/adapters/flight.entity";
+import { UserEntity } from "../../users/adapters/user.entity";
 import { UserFlightRepo } from "../models/userFlight.repository";
 import { UserFlightEntity } from "./userFlight.entity";
 
@@ -29,7 +31,7 @@ export class UserFlightPgRepo implements UserFlightRepo {
         return this.repository.save(userFlight);
     }
 
-    async update(id: string,userFlight: Partial<UserFlightEntity>): Promise<UserFlightEntity | null> {
+    async update(id: string, userFlight: Partial<UserFlightEntity>): Promise<UserFlightEntity | null> {
         await this.repository.update(id, userFlight);
         return this.repository.findOneBy({ id });
     }
@@ -39,4 +41,13 @@ export class UserFlightPgRepo implements UserFlightRepo {
         return result.affected !== 0;
     }
 
+    async isSeatAvailable(flightId: number, seatNumber: number): Promise<boolean> {
+        const existingBooking = await this.repository.findOne({ where: { flight: { id: flightId }, numberOfSeats: seatNumber } });
+        return !existingBooking;
+    }
+
+    async bookFlight(user: UserEntity, flight: FlightEntity, seatNumber: number): Promise<UserFlightEntity> {
+        const newBooking = this.repository.create({ user, flight, numberOfSeats: seatNumber });
+        return await this.repository.save(newBooking);
+    }
 }

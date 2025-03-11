@@ -10,7 +10,7 @@ export default class UserFlightRouter {
     router
       .route("/userFlights")
       .get(this.userFlightController.findAll)
-      .post(this.userFlightController.create);
+      .post(this.userFlightController.bookFlight);
 
     router
       .route("/userFlights/:id")
