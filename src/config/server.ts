@@ -11,6 +11,7 @@ import { userRouter } from "../modules/users/dependencies";
 import cors from "cors";
 import { trackRouter } from "../modules/tracks/dependencies";
 import { authMiddleware, authRouter } from "../modules/auth/dependencies";
+import { userFlightRouter } from "../modules/userFlights/dependencies";
 
 export class App {
   private static app: Application = express();
@@ -56,6 +57,7 @@ export class App {
     api.use(pilotRouter.getRoutes());
     api.use(userRouter.getRoutes());
     api.use(trackRouter.getRoutes());
+    api.use(userFlightRouter.getRoutes());
 
     this.app.use("/api", authMiddleware.authenticate);
     this.app.use("/api", api);

@@ -14,6 +14,9 @@ export class LocatedEntity{
     @Column({ type: "double precision",  nullable: false })
     latitude: number;
 
+    @Column({ type: "varchar",  nullable: false })
+    name: string;
+
     @OneToMany(() => FlightEntity, (flight) => flight.origin)
     flightsOrigin : FlightEntity[]; 
 

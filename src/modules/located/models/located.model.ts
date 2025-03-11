@@ -4,6 +4,7 @@ export abstract class Located {
     id: number;
     longitude: number;
     latitude: number;
+    name:string;
     flightsOrigin: Flight[];
     flightsDestination: Flight[];
 

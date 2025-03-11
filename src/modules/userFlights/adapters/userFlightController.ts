@@ -4,6 +4,9 @@ import { FindUserFlightByIdUseCase } from "../use_cases/findById";
 import { CreateUserFlightsUseCase } from "../use_cases/create";
 import { UpdateUserFlightUseCase } from "../use_cases/update";
 import { DeleteUserFlightsUseCase } from "../use_cases/delete";
+import { BookFlightsUseCase } from "../use_cases/bookFlights";
+import { UserNotFoundError } from "../../users/models/errors/userNotFound.error";
+import { UserFlightBadRequestError } from "../models/error/userFlightBadRequest.error";
 
 
 export class UserFlightController {
@@ -12,7 +15,7 @@ export class UserFlightController {
     private readonly createUseCase: CreateUserFlightsUseCase,
     private readonly updateUseCase: UpdateUserFlightUseCase,
     private readonly deleteUseCase: DeleteUserFlightsUseCase,
-
+    private readonly bookFlightUseCase: BookFlightsUseCase
 
   ) { }
 
@@ -99,5 +102,35 @@ export class UserFlightController {
 
     }
   };
+
+  bookFlight = async (req: Request, res: Response) => {
+
+    try {
+      const token = req.cookies.Authorization;
+      const { flightId, seatNumber } = req.body;
+      if
+        (!flightId || !seatNumber) {
+        res.status(400).json({ message: "Missing flightId or seatNumber" });
+        return
+      }
+
+
+      const result = await this.bookFlightUseCase.reserve(token, flightId, seatNumber);
+      res.status(201).json(result);
+      return
+    } catch (error) {
+      if (error instanceof UserNotFoundError) {
+
+        res.status(404).json({ message: error.message });
+        return
+      }
+      console.log(error)
+      if (error instanceof UserFlightBadRequestError) {
+        res.status(400).json({ message: error.message });
+      }
+
+      return
+    }
+  }
 
 }
