@@ -9,9 +9,9 @@ import { maintenanceRouter } from "../modules/maintenances/dependencies";
 import { pilotRouter } from "../modules/pilots/dependencies";
 import { userRouter } from "../modules/users/dependencies";
 import cors from "cors";
-import { trackRouter } from "../modules/tracks/dependencies";
 import { authMiddleware, authRouter } from "../modules/auth/dependencies";
 import { userFlightRouter } from "../modules/userFlights/dependencies";
+import { runwayRouter } from "../modules/runways/dependencies";
 
 export class App {
   private static app: Application = express();
@@ -56,7 +56,7 @@ export class App {
     api.use(maintenanceRouter.getRoutes());
     api.use(pilotRouter.getRoutes());
     api.use(userRouter.getRoutes());
-    api.use(trackRouter.getRoutes());
+    api.use(runwayRouter.getRoutes());
     api.use(userFlightRouter.getRoutes());
 
     this.app.use("/api", authMiddleware.authenticate);

@@ -1,9 +1,8 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { AirplaneEntity } from "../../airplanes/adapters/airplane.entity";
-import { PilotEntity } from "../../pilots/adapters/pilot.entity";
-import { TrackEntity } from "../../tracks/adapters/track.entity";
-import { LocatedEntity } from "../../located/adapters/located.entity";
+import { RunwayEntity } from "../../runways/adapters/runway.entity";
 import { UserFlightEntity } from "../../userFlights/adapters/userFlight.entity";
+import { PilotEntity } from "../../pilots/adapters/pilot.entity";
 
 @Entity("flights")
 export class FlightEntity {
@@ -27,20 +26,15 @@ export class FlightEntity {
   @JoinColumn({ name: "pilot_id" })
   pilot: PilotEntity;
 
-  @ManyToOne(() => TrackEntity, (track) => track.flights)
-  @JoinColumn({ name: "track_id" })
-  track: TrackEntity;
-
-  @ManyToOne(() => LocatedEntity, (located) => located.flightsOrigin)
+  @ManyToOne(() => RunwayEntity, (runaway) => runaway.flightsOrigin)
   @JoinColumn({ name: "origin_id" })
-  origin: LocatedEntity;
+  origin: RunwayEntity;
 
-
-  @ManyToOne(() => LocatedEntity, (located) => located.flightsDestination)
+  @ManyToOne(() => RunwayEntity, (runaway) => runaway.flightsDestination)
   @JoinColumn({ name: "destination_id" })
-  destination: LocatedEntity;
+  destination: RunwayEntity;
 
   @OneToMany(() => UserFlightEntity, (userFlight) => userFlight.flight)
-  userFlight: UserFlightEntity[];
+  usersFlight: UserFlightEntity[];
 
 }

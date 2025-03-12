@@ -1,7 +1,6 @@
 import { Airplane } from "../../airplanes/models/airplane.model";
-import { Located } from "../../located/models/located.model";
 import { Pilot } from "../../pilots/models/pilot.model";
-import { Track } from "../../tracks/models/track.model";
+import { Runway} from "../../runways/models/runway.model";
 import { UserFlight } from "../../userFlights/models/userFlight.model";
 
 export abstract class Flight {
@@ -11,8 +10,7 @@ export abstract class Flight {
   status: boolean;
   airplane: Airplane;
   pilot: Pilot;
-  track: Track;
-  origin: Located;
-  destination: Located;
-  userFlight: UserFlight[]
+  origin: Runway;
+  destination: Runway;
+  usersFlight: UserFlight[]
 }
