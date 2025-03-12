@@ -1,11 +1,10 @@
-import { Flight } from "../../flights/models/flight.model";
+import { Runway } from "../../runways/models/runway.model";
 
 export abstract class Located {
     id: number;
     longitude: number;
     latitude: number;
     name:string;
-    flightsOrigin: Flight[];
-    flightsDestination: Flight[];
+    runways: Runway[];
 
 }

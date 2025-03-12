@@ -1,16 +1,16 @@
-import { CreateTrackUseCase } from "../use_cases/create";
-import { FindTrackByIdUseCase } from "../use_cases/finById";
-import { FindTracksUseCase } from "../use_cases/find";
 import { Request, Response } from "express";
-import { UpdateTrackUseCase } from "../use_cases/update";
-import { DeleteTrackUseCase } from "../use_cases/delete";
+import { FindRunwaysUseCase } from "../use_cases/find";
+import { FindRunwayByIdUseCase } from "../use_cases/finById";
+import { CreateRunwayUseCase } from "../use_cases/create";
+import { UpdateRunwayUseCase } from "../use_cases/update";
+import { DeleteRunwayUseCase } from "../use_cases/delete";
 
-export class TrackController {
-  constructor(private readonly findAllUseCase: FindTracksUseCase,
-    private readonly findByIdUseCase: FindTrackByIdUseCase,
-    private readonly createUseCase: CreateTrackUseCase,
-    private readonly updateUseCase: UpdateTrackUseCase,
-    private readonly deleteUseCase: DeleteTrackUseCase,
+export class RunwayController {
+  constructor(private readonly findAllUseCase: FindRunwaysUseCase,
+    private readonly findByIdUseCase: FindRunwayByIdUseCase,
+    private readonly createUseCase: CreateRunwayUseCase,
+    private readonly updateUseCase: UpdateRunwayUseCase,
+    private readonly deleteUseCase: DeleteRunwayUseCase,
 
   ) { }
 
@@ -43,42 +43,42 @@ export class TrackController {
 
     try {
       const id = parseInt(req.params.id);
-      const track = await this.findByIdUseCase.run(id);
-      if (!track) {
-        res.status(404).json({ message: "track not found." });
+      const runway = await this.findByIdUseCase.run(id);
+      if (!runway) {
+        res.status(404).json({ message: "runway not found." });
         return;
       }
-      res.status(200).json(track);
+      res.status(200).json(runway);
     } catch (err) {
       console.log(err);
       res.status(500).json({
-        message: "Something went wrong while fetching the track.",
+        message: "Something went wrong while fetching the runway.",
       });
     }
   };
 
   create = async (req: Request, res: Response) => {
     try {
-      const track = await this.createUseCase.run(req.body);
-      res.status(201).json(track);
+      const runway = await this.createUseCase.run(req.body);
+      res.status(201).json(runway);
     } catch (err) {
       console.error(err);
-      res.status(400).json({ message: "Error creating track." });
+      res.status(400).json({ message: "Error creating runway." });
     }
   };
 
   update = async (req: Request, res: Response) => {
     try {
       const id = parseInt(req.params.id);
-      const updatedtrack = await this.updateUseCase.run(id, req.body);
-      if (!updatedtrack) {
-        res.status(404).json({ message: "track not found" });
+      const updatedrunway = await this.updateUseCase.run(id, req.body);
+      if (!updatedrunway) {
+        res.status(404).json({ message: "runway not found" });
         return;
       }
-      res.status(200).json(updatedtrack);
+      res.status(200).json(updatedrunway);
     } catch (err) {
       console.error(err);
-      res.status(500).json({ message: "Error updating track." });
+      res.status(500).json({ message: "Error updating runway." });
     }
   };
 
@@ -87,13 +87,13 @@ export class TrackController {
       const id = parseInt(req.params.id);
       const deleted = await this.deleteUseCase.run(id);
       if (!deleted) {
-        res.status(404).json({ message: "track not found" });
+        res.status(404).json({ message: "runway not found" });
         return;
       }
-      res.status(200).send({ message: "track deleted" });
+      res.status(200).send({ message: "runway deleted" });
     } catch (err) {
       console.error(err);
-      res.status(500).json({ message: "Error deleting track." });
+      res.status(500).json({ message: "Error deleting runway." });
 
     }
   };
