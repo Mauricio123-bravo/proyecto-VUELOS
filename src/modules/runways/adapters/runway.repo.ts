@@ -18,7 +18,10 @@ export class RunwaykPgRepo implements RunwayRepo {
     return { runways, total };
   }
   async findById(id: number): Promise<RunwayEntity | null> {
-    return this.repository.findOneBy({ id });
+    return this.repository.findOne({
+      where: { id },
+      relations: ["location"]
+    });
   }
 
   async create(runways: RunwayEntity): Promise<RunwayEntity> {
