@@ -13,4 +13,5 @@ export abstract class Flight {
   origin: Runway;
   destination: Runway;
   usersFlight: UserFlight[]
+  distance: number;
 }
