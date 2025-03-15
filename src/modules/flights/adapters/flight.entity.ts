@@ -37,4 +37,7 @@ export class FlightEntity {
   @OneToMany(() => UserFlightEntity, (userFlight) => userFlight.flight)
   usersFlight: UserFlightEntity[];
 
+  @Column({ type: "double precision", nullable: false })
+  distance: number;
+
 }

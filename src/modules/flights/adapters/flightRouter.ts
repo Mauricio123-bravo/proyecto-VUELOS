@@ -11,9 +11,9 @@ export default class FlightRouter {
   public getRoutes(): Router {
     const router = Router();
 
-    router.use(
+    /* router.use(
       this.authMiddleware.authorizeRole([UserRole.ADMIN])
-    );
+    ); */
 
     router
       .route("/flights")
