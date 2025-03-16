@@ -22,7 +22,7 @@ export class AuthController {
       .login(user, req.ip!)
       .then(({ access, refresh, userDB }) => {
         res.cookie("Authorization", access, {
-          expires: new Date(Date.now() + ACCESS_EXPIRATION_TIME * 1000),
+          expires: new Date(Date.now() + REFRESH_EXPIRATION_TIME * 1000),
           secure: true,
           sameSite: "none",
           httpOnly: true,

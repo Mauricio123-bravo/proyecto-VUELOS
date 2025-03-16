@@ -9,12 +9,19 @@ export class SessionPgRepo implements SessionRepo {
   private repository = AppDataSource.getRepository(SessionEntity);
 
   async getSession(ip: string, userId: number): Promise<Session> {
-    const session =  await this.repository.findOneBy({ ipAddress: Equal(ip), user: Equal(userId) });
-    if (!session){
-        throw new InvalidCredentials()
+    const session = await this.repository.findOne({
+      where: {
+        ipAddress: Equal(ip),
+        user: Equal(userId),
+      },
+      relations: ["user"],
+    });
+
+    if (!session) {
+      throw new InvalidCredentials();
     }
 
-    return session
+    return session;
   }
 
   async save(session: Session): Promise<number> {

@@ -6,7 +6,6 @@ import {
   DB_PORT,
   DB_USER,
   NODE_ENV,
-
 } from "../config/vars";
 
 export const AppDataSource = new DataSource({
@@ -19,5 +18,5 @@ export const AppDataSource = new DataSource({
   entities: [`${__dirname}/../modules/**/adapters/*.entity.{ts,js}`],
   migrations: [`${__dirname}/migrations/*.{ts,js}`],
   synchronize: false,
-  logging:  false,
+  logging: NODE_ENV === "dev",
 });

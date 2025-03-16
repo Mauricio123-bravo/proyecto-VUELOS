@@ -15,34 +15,38 @@ import { FindUserFlightsUseCase } from "./use_cases/find";
 import { FindUserFlightByIdUseCase } from "./use_cases/findById";
 import { UpdateUserFlightUseCase } from "./use_cases/update";
 
-
 const userFlightRepository: UserFlightRepo = new UserFlightPgRepo();
 const userRepository: UserRepo = new UserPgRepo();
 const flightRepository: FlightRepo = new FlightPgRepo();
 const token: TokenProvider = new JWTProvider();
 
-const findUserFlightUseCase: FindUserFlightsUseCase = new FindUserFlightsUseCase(
-    userFlightRepository,
-);
-const findByIdUserFlightUseCase: FindUserFlightByIdUseCase = new FindUserFlightByIdUseCase(
-    userFlightRepository,
-);
-const createUserFlightUseCase: CreateUserFlightsUseCase = new CreateUserFlightsUseCase(
-    userFlightRepository,
-);
-const updateUserFlightUseCase: UpdateUserFlightUseCase = new UpdateUserFlightUseCase(
-    userFlightRepository,
-);
-const deleteUserFlightUseCase: DeleteUserFlightsUseCase = new DeleteUserFlightsUseCase(
-    userFlightRepository,
-);
+const findUserFlightUseCase: FindUserFlightsUseCase =
+  new FindUserFlightsUseCase(userFlightRepository);
+const findByIdUserFlightUseCase: FindUserFlightByIdUseCase =
+  new FindUserFlightByIdUseCase(userFlightRepository);
+const createUserFlightUseCase: CreateUserFlightsUseCase =
+  new CreateUserFlightsUseCase(userFlightRepository);
+const updateUserFlightUseCase: UpdateUserFlightUseCase =
+  new UpdateUserFlightUseCase(userFlightRepository);
+const deleteUserFlightUseCase: DeleteUserFlightsUseCase =
+  new DeleteUserFlightsUseCase(userFlightRepository);
 const bookFlightsUseCase: BookFlightsUseCase = new BookFlightsUseCase(
-    userFlightRepository, userRepository, flightRepository, token
+  userFlightRepository,
+  userRepository,
+  flightRepository,
+  token,
 );
 
 const userFlightController: UserFlightController = new UserFlightController(
-    findUserFlightUseCase, findByIdUserFlightUseCase, createUserFlightUseCase, updateUserFlightUseCase, deleteUserFlightUseCase, bookFlightsUseCase
+  findUserFlightUseCase,
+  findByIdUserFlightUseCase,
+  createUserFlightUseCase,
+  updateUserFlightUseCase,
+  deleteUserFlightUseCase,
+  bookFlightsUseCase,
 );
-const userFlightRouter: UserFlightRouter = new UserFlightRouter(userFlightController);
+const userFlightRouter: UserFlightRouter = new UserFlightRouter(
+  userFlightController,
+);
 
 export { userFlightRouter };

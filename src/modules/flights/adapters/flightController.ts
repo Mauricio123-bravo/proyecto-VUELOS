@@ -6,34 +6,39 @@ import { UpdateFlightUseCase } from "../use_cases/update";
 import { DeleteFlightUseCase } from "../use_cases/delete";
 
 export class FlightController {
-  constructor(private readonly findAllUseCase: FindFlightsUseCase,
+  constructor(
+    private readonly findAllUseCase: FindFlightsUseCase,
     private readonly findByIdUseCase: FindFlightByIdUseCase,
     private readonly createUseCase: CreateFlightUseCase,
     private readonly updateUseCase: UpdateFlightUseCase,
-    private readonly deleteUseCase: DeleteFlightUseCase
-  ) { }
+    private readonly deleteUseCase: DeleteFlightUseCase,
+  ) {}
 
   findAll = async (req: Request, res: Response) => {
-
     try {
       const page = parseInt(req.query.page as string) || 1; // Página actual (por defecto 1)
       const limit = parseInt(req.query.limit as string) || 10; // Cantidad de registros por página (por defecto 10)
-      const origin = req.query.origin ? parseInt(req.query.origin as string) : undefined;
-      const destination = req.query.destination ? parseInt(req.query.destination as string) : undefined;
+      const origin = req.query.origin
+        ? parseInt(req.query.origin as string)
+        : undefined;
+      const destination = req.query.destination
+        ? parseInt(req.query.destination as string)
+        : undefined;
 
-
-      const { data, total, totalPages } = await this.findAllUseCase
-        .run(page, limit, origin, destination);
+      const { data, total, totalPages } = await this.findAllUseCase.run(
+        page,
+        limit,
+        origin,
+        destination,
+      );
       res.status(200).json({
         data,
         total,
         page,
         totalPages,
-        filters: { origin, destination }
-      }
-      )
-    }
-    catch (err) {
+        filters: { origin, destination },
+      });
+    } catch (err) {
       console.log(err);
 
       res.status(500).json({
@@ -43,7 +48,6 @@ export class FlightController {
   };
 
   findById = async (req: Request, res: Response) => {
-
     try {
       const id = parseInt(req.params.id);
       const flight = await this.findByIdUseCase.run(id);
