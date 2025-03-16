@@ -2,7 +2,6 @@ import * as bcrypt from "bcryptjs";
 import { EncryptionProvider } from "../models/providers/encryptionProvider";
 
 export default class BcryptProvider implements EncryptionProvider {
-
   async hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt();
     return await bcrypt.hash(password, salt);
@@ -12,4 +11,3 @@ export default class BcryptProvider implements EncryptionProvider {
     return bcrypt.compareSync(password, hashedPassword);
   }
 }
-

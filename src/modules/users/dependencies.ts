@@ -13,20 +13,22 @@ import { FindUserByIdUseCase } from "./use_cases/findById";
 
 const userRepository: UserRepo = new UserPgRepo();
 
-const findUsersUseCase: FindUsersUseCase = new FindUsersUseCase(
-    userRepository
-);
+const findUsersUseCase: FindUsersUseCase = new FindUsersUseCase(userRepository);
 const findByIdUseCase: FindUserByIdUseCase = new FindUserByIdUseCase(
-    userRepository
-)
+  userRepository,
+);
 const userController: UserController = new UserController(
-    findUsersUseCase, findByIdUseCase
+  findUsersUseCase,
+  findByIdUseCase,
 );
 const sessionRepo: SessionRepo = new SessionPgRepo();
 const tokenProvider: TokenProvider = new JWTProvider();
-const authUseCase: AuthenticateUseCase = new AuthenticateUseCase(sessionRepo, tokenProvider)
+const authUseCase: AuthenticateUseCase = new AuthenticateUseCase(
+  sessionRepo,
+  tokenProvider,
+);
 
-const jWTProvider: JWTProvider = new JWTProvider()
+const jWTProvider: JWTProvider = new JWTProvider();
 
 const authMiddleware = new AuthMiddleware(authUseCase, jWTProvider);
 const userRouter: UserRouter = new UserRouter(userController, authMiddleware);

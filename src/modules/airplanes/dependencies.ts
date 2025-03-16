@@ -13,9 +13,8 @@ const airplaneRepository: AirplaneRepo = new AirplanePgRepo();
 const findAirplanesUseCase: FindAirplanesUseCase = new FindAirplanesUseCase(
   airplaneRepository,
 );
-const findByIdAirplanesUseCase: FindAirplaneByIdUseCase = new FindAirplaneByIdUseCase(
-  airplaneRepository,
-);
+const findByIdAirplanesUseCase: FindAirplaneByIdUseCase =
+  new FindAirplaneByIdUseCase(airplaneRepository);
 const createAirplanesUseCase: CreateAirplaneUseCase = new CreateAirplaneUseCase(
   airplaneRepository,
 );
@@ -27,8 +26,15 @@ const deleteAirplanesUseCase: DeleteAirplaneUseCase = new DeleteAirplaneUseCase(
 );
 
 const airplaneController: AirplaneController = new AirplaneController(
-  findAirplanesUseCase, findByIdAirplanesUseCase, createAirplanesUseCase, updateAirplanesUseCase, deleteAirplanesUseCase
+  findAirplanesUseCase,
+  findByIdAirplanesUseCase,
+  createAirplanesUseCase,
+  updateAirplanesUseCase,
+  deleteAirplanesUseCase,
 );
-const airplaneRouter: AirplaneRouter = new AirplaneRouter(airplaneController, authMiddleware);
+const airplaneRouter: AirplaneRouter = new AirplaneRouter(
+  airplaneController,
+  authMiddleware,
+);
 
 export { airplaneRouter };

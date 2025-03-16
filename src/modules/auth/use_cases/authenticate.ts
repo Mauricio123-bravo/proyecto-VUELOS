@@ -1,6 +1,7 @@
 import { SessionRepo } from "../models/session.repository";
 import { TokenProvider } from "../models/providers/tokenProvider";
 import { REFRESH_EXPIRATION_TIME } from "../../../config/vars";
+import { ForbiddenError } from "../../shared/errors/forbidden.error";
 
 export class AuthenticateUseCase {
   constructor(
@@ -20,9 +21,16 @@ export class AuthenticateUseCase {
     );
 
     if (session.revoked) {
-      throw new Error("Forbidden");
+      throw new ForbiddenError();
     }
 
-    return this.tokenProvider.generateToken(session.user!, REFRESH_EXPIRATION_TIME);
+    if (!session.user) {
+      throw new Error("User not found in session")
+    }
+
+    return this.tokenProvider.generateToken(
+      session.user,
+      REFRESH_EXPIRATION_TIME,
+    );
   }
 }
