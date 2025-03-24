@@ -1,7 +1,8 @@
 import { SessionRepo } from "../models/session.repository";
 import { TokenProvider } from "../models/providers/tokenProvider";
-import { REFRESH_EXPIRATION_TIME } from "../../../config/vars";
+import { ACCESS_EXPIRATION_TIME, REFRESH_EXPIRATION_TIME } from "../../../config/vars";
 import { ForbiddenError } from "../../shared/errors/forbidden.error";
+import { InvalidCredentials } from "../models/errors/credential.error";
 
 export class AuthenticateUseCase {
   constructor(
@@ -30,7 +31,7 @@ export class AuthenticateUseCase {
 
     return this.tokenProvider.generateToken(
       session.user,
-      REFRESH_EXPIRATION_TIME,
+      ACCESS_EXPIRATION_TIME,
     );
   }
 }

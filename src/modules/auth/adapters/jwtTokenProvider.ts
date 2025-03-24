@@ -14,7 +14,7 @@ export default class JWTProvider implements TokenProvider {
 
   validate(token: string): void {
     console.log(token);
-    
+
     try {
       jwt.verify(token, SECRET);
     } catch (error) {
@@ -22,14 +22,14 @@ export default class JWTProvider implements TokenProvider {
         throw new ExpiredToken();
       }
       console.log(error);
-      
+
       throw new InvalidCredentials();
     }
   }
 
   generateToken(user: User, expiration: number): string {
     console.log(user);
-    
+
     return jwt.sign(
       { userId: user.id, email: user.email, role: user.role },
       SECRET,
