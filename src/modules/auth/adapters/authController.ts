@@ -14,7 +14,7 @@ export class AuthController {
     private readonly loginUseCase: LoginUseCase,
     private readonly registerUseCase: RegisterUseCase,
     private readonly changeRoleUseCase: ChangeRoleUseCase,
-  ) {}
+  ) { }
 
   login = (req: Request, res: Response) => {
     const user: User = req.body;

@@ -15,15 +15,17 @@ export class AuthMiddleware {
   authenticate = async (req: Request, res: Response, next: NextFunction) => {
     let token = req.cookies["Authorization"] as string;
     const refresh = req.cookies["X-Refresh-Token"] as string;
-    const ip = req.ip!;
+    const ip = req.ip || req.socket.remoteAddress;
+    
+    if (!ip) {
+      res.status(401).json({ message: "IP address required" });
+      return;
+    }
 
     if (!token || !refresh) {
       res.status(401).json({ message: "invalid credentials" });
       return;
     }
-
-    console.log("TOKENNN", token);
-    console.log("TOKENNN", refresh);
 
     try {
       await this.authUseCase.authenticate(token);
@@ -37,13 +39,15 @@ export class AuthMiddleware {
     }
 
     try {
-      token = await this.authUseCase.getAccessToken(ip!, refresh);
+      token = await this.authUseCase.getAccessToken(ip, refresh);
 
       res.cookie("Authorization", token, {
         expires: new Date(Date.now() + REFRESH_EXPIRATION_TIME * 1000),
         secure: true,
         sameSite: "none",
         httpOnly: true,
+        path: "/",
+        domain: req.hostname,
       });
       next();
     } catch (error) {

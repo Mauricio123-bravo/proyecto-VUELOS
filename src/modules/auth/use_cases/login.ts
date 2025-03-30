@@ -9,6 +9,7 @@ import {
   REFRESH_EXPIRATION_TIME,
 } from "../../../config/vars";
 import { ServerError } from "../../shared/errors/server.error";
+import { BadRequest } from "../../shared/errors/bad_request.error";
 
 export default class LoginUseCase {
   constructor(
@@ -22,20 +23,36 @@ export default class LoginUseCase {
     { email, password }: User,
     ip: string,
   ): Promise<{ access: string; refresh: string; userDB: UserResponse }> {
+    const user = await this.validateUser(email, password);
+    const { access, refresh } = this.generateTokens(user);
+
+    await this.saveSession(user, refresh, ip);
+    const { password: _password, ...userResponse } = user;
+    return { access, refresh, userDB: userResponse };
+  }
+
+  private async validateUser(email: string, password: string): Promise<User> {
+    if (!email || !password) throw new BadRequest();
+
     const user = await this.userRepository.findByEmail(email);
-    if (!user) {
+    if (!user || !this.encryption.verifyHash(password, user.password)) {
       throw new InvalidCredentials();
     }
+    return user;
+  }
 
-    const valid = this.encryption.verifyHash(password, user.password);
-    if (!valid) {
-      throw new InvalidCredentials();
-    }
+  private generateTokens(user: User): { access: string; refresh: string } {
+    const refresh = this.token.generateToken(user, REFRESH_EXPIRATION_TIME);
+    const access = this.token.generateToken(user, ACCESS_EXPIRATION_TIME);
+    return { access, refresh };
+  }
 
+  private async saveSession(
+    user: User,
+    refresh: string,
+    ip: string,
+  ): Promise<void> {
     try {
-      const refresh = this.token.generateToken(user, REFRESH_EXPIRATION_TIME);
-      const access = this.token.generateToken(user, ACCESS_EXPIRATION_TIME);
-
       await this.sessionRepository.save({
         id: 0,
         token: refresh,
@@ -43,11 +60,7 @@ export default class LoginUseCase {
         revoked: false,
         ipAddress: ip,
       });
-      const { password: _password, ...userResponse } = user;
-
-      return { access, refresh, userDB: userResponse };
     } catch (err) {
-      console.log("error saving session: ", err);
       throw new ServerError();
     }
   }
