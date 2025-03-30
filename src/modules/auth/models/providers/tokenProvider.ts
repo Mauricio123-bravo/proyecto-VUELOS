@@ -3,7 +3,7 @@ import { Token } from "../models/token.model";
 
 export interface TokenProvider {
   /** Return Signed token, expiration is the time in seconds */
-  generateToken(user: User | null, expiration: number): string;
+  generateToken(user: User, expiration: number): string;
   validate(token: string): void;
   getPayload(token: string): Token;
 }
