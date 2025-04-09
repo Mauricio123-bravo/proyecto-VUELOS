@@ -5,12 +5,16 @@ import PilotRouter from "./adapters/pilotsRouter";
 import { PilotRepo } from "./models/pilot.repository";
 import { CreatePilotUseCase } from "./use_cases/create";
 import { DeletePilotUseCase } from "./use_cases/delete";
-import { FindPilotsUseCase } from "./use_cases/find";
+import { FindPaginatedPilotsUseCase } from "./use_cases/find";
+import { FindAllPilotUseCase } from "./use_cases/findAll";
 import { FindPilotByIdUseCase } from "./use_cases/findById";
 import { UpdatePilotUseCase } from "./use_cases/update";
 
 const pilotRepository: PilotRepo = new PilotPgRepo();
-const findPilotsUseCase: FindPilotsUseCase = new FindPilotsUseCase(
+const findPaginatedPilotsUseCase: FindPaginatedPilotsUseCase = new FindPaginatedPilotsUseCase(
+    pilotRepository,
+);
+const findAllPilotsUseCase: FindAllPilotUseCase = new FindAllPilotUseCase(
     pilotRepository,
 );
 const findByIdPilotsUseCase: FindPilotByIdUseCase = new FindPilotByIdUseCase(
@@ -27,7 +31,7 @@ const deletePilotsUseCase: DeletePilotUseCase = new DeletePilotUseCase(
 );
 
 const pilotController: PilotController = new PilotController(
-    findPilotsUseCase, findByIdPilotsUseCase, createPilotsUseCase, updatePilotsUseCase, deletePilotsUseCase
+    findPaginatedPilotsUseCase, findAllPilotsUseCase, findByIdPilotsUseCase, createPilotsUseCase, updatePilotsUseCase, deletePilotsUseCase
 );
 const pilotRouter: PilotRouter = new PilotRouter(pilotController, authMiddleware);
 

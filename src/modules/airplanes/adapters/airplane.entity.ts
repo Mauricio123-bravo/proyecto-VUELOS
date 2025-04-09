@@ -10,8 +10,8 @@ export class AirplaneEntity {
   @Column({ type: "varchar", length: 100, nullable: false })
   name: string;
 
-  @Column({ type: "varchar", length: 100, nullable: false })
-  modelYear: string;
+  @Column({ type: "int",nullable: false })
+  modelYear: number;
 
   @Column({ type: "int", nullable: false })
   capacity: number;

@@ -16,9 +16,15 @@ export default class MaintenanceRouter {
       .route("/maintenances")
       .get(
         this.authMiddleware.authorizeRole([UserRole.ADMIN, UserRole.PILOT]),
-        this.maintenanceController.findAll
+        this.maintenanceController.findPaginated
       )
       .post(this.authMiddleware.authorizeRole([UserRole.ADMIN]), this.maintenanceController.create);
+
+    router
+      .route("/maintenances/all")
+      .get(
+        this.authMiddleware.authorizeRole([UserRole.ADMIN, UserRole.PILOT]),
+        this.maintenanceController.findAll)
 
     router
       .route("/maintenances/:id")

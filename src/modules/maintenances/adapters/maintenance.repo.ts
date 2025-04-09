@@ -7,11 +7,14 @@ export class MaintenancePgRepo implements MaintenanceRepo {
   private repository = AppDataSource.getRepository(MaintenanceEntity);
 
   findAll(): Promise<Maintenance[]> {
-    return this.repository.find();
+    return this.repository.find({
+      relations: ["airplane"],
+  });
   }
 
   async findAllPaginated(limit: number, offset: number): Promise<{ maintenances: MaintenanceEntity[], total: number }> {
     const [maintenances, total] = await this.repository.findAndCount({
+      relations: ["airplane"],
       take: limit,  // Límite de registros por página
       skip: offset, // Desde qué registro empezar
     });
@@ -20,7 +23,10 @@ export class MaintenancePgRepo implements MaintenanceRepo {
   }
 
   async findById(id: number): Promise<MaintenanceEntity | null> {
-    return this.repository.findOneBy({ id });
+    return this.repository.findOne({
+      where: { id },
+      relations: ["airplane"],
+     });
   }
 
   async create(maintenance: MaintenanceEntity): Promise<MaintenanceEntity> {

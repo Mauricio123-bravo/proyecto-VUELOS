@@ -16,10 +16,17 @@ export default class PilotRouter {
       .route("/pilots")
       .get(
         this.authMiddleware.authorizeRole([UserRole.ADMIN, UserRole.PILOT]),
-        this.pilotController.findAll
+        this.pilotController.findAllPaginated
       )
       .post(this.authMiddleware.authorizeRole([UserRole.ADMIN]), this.pilotController.create);
 
+    router
+      .route("/pilots/all")
+      .get(
+        this.authMiddleware.authorizeRole([UserRole.ADMIN, UserRole.PILOT]),
+        this.pilotController.findAll
+      );
+      
     router
       .route("/pilots/:id")
       .get(

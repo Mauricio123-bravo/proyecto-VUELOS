@@ -6,10 +6,15 @@ import { MaintenanceRepo } from "./models/maintenance.repository";
 import { CreateMaintenanceUseCase } from "./use_cases/create";
 import { DeleteMaintenanceUseCase } from "./use_cases/delete";
 import { FindMaintenancesUseCase } from "./use_cases/find";
+import { FindAllMaintenanceUseCase } from "./use_cases/findAll";
 import { FindMaintenanceByIdUseCase } from "./use_cases/findById";
 import { UpdateMaintenanceUseCase } from "./use_cases/update";
 
 const maintenanceRepository: MaintenanceRepo = new MaintenancePgRepo();
+
+const findAllMaintenanceUseCase: FindAllMaintenanceUseCase = new FindAllMaintenanceUseCase(
+    maintenanceRepository,
+);
 const findMaintenanceUseCase: FindMaintenancesUseCase = new FindMaintenancesUseCase(
     maintenanceRepository,
 );
@@ -27,7 +32,7 @@ const deleteMaintenanceUseCase: DeleteMaintenanceUseCase = new DeleteMaintenance
 );
 
 const maintenanceController: MaintenanceController = new MaintenanceController(
-    findMaintenanceUseCase, findByIdMaintenanceUseCase, createMaintenanceUseCase, updateMaintenanceUseCase, deleteMaintenanceUseCase
+    findAllMaintenanceUseCase, findMaintenanceUseCase, findByIdMaintenanceUseCase, createMaintenanceUseCase, updateMaintenanceUseCase, deleteMaintenanceUseCase
 );
 
 const maintenanceRouter: MaintenanceRouter = new MaintenanceRouter(maintenanceController, authMiddleware);

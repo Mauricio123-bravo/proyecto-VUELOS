@@ -1,6 +1,6 @@
 import { AirplaneRepo } from "./models/airplane.repository";
 import { AirplanePgRepo } from "./adapters/airplane.repo";
-import { FindAirplanesUseCase } from "./use_cases/find";
+import { FindPaginatedAirplanesUseCase } from "./use_cases/find";
 import { AirplaneController } from "./adapters/airplaneController";
 import AirplaneRouter from "./adapters/airplaneRouter";
 import { FindAirplaneByIdUseCase } from "./use_cases/findById";
@@ -8,9 +8,13 @@ import { CreateAirplaneUseCase } from "./use_cases/create";
 import { UpdateAirplaneUseCase } from "./use_cases/update";
 import { DeleteAirplaneUseCase } from "./use_cases/delete";
 import { authMiddleware } from "../auth/dependencies";
+import { FindAllAirplaneUseCase } from "./use_cases/findAll";
 
 const airplaneRepository: AirplaneRepo = new AirplanePgRepo();
-const findAirplanesUseCase: FindAirplanesUseCase = new FindAirplanesUseCase(
+const findPaginatedAirplanesUseCase: FindPaginatedAirplanesUseCase = new FindPaginatedAirplanesUseCase(
+  airplaneRepository,
+);
+const findAllAirplanesUseCase: FindAllAirplaneUseCase = new FindAllAirplaneUseCase(
   airplaneRepository,
 );
 const findByIdAirplanesUseCase: FindAirplaneByIdUseCase =
@@ -26,7 +30,8 @@ const deleteAirplanesUseCase: DeleteAirplaneUseCase = new DeleteAirplaneUseCase(
 );
 
 const airplaneController: AirplaneController = new AirplaneController(
-  findAirplanesUseCase,
+  findPaginatedAirplanesUseCase,
+  findAllAirplanesUseCase,
   findByIdAirplanesUseCase,
   createAirplanesUseCase,
   updateAirplanesUseCase,

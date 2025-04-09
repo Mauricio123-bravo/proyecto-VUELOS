@@ -16,9 +16,16 @@ export default class RunwayRouter {
       .route("/runways")
       .get(
         this.authMiddleware.authorizeRole([UserRole.ADMIN, UserRole.PILOT]),
-        this.runwayController.findAll
+        this.runwayController.findAllPaginated
       )
       .post(this.authMiddleware.authorizeRole([UserRole.ADMIN]), this.runwayController.create);
+
+    router
+      .route("/runways/all") // Nueva ruta para obtener todas sin paginación
+      .get(
+        this.authMiddleware.authorizeRole([UserRole.ADMIN, UserRole.PILOT]),
+        this.runwayController.findAll
+      );
 
     router
       .route("/runways/:id")

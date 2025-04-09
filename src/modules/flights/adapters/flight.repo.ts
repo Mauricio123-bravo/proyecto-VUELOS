@@ -1,16 +1,15 @@
 import { AppDataSource } from "../../../data/pg";
-import { calculateDistance } from "../utils/calculateDistance ";
-import { DistanceError } from "../models/error/distance.error";
 import { Flight } from "../models/flight.model";
 import { FlightRepo } from "../models/flight.repository";
 import { FlightEntity } from "./flight.entity";
-import { RunwayEntity } from "../../runways/adapters/runway.entity";
 
 export class FlightPgRepo implements FlightRepo {
   private repository = AppDataSource.getRepository(FlightEntity);
 
   findAll(): Promise<Flight[]> {
-    return this.repository.find();
+    return this.repository.find({
+      relations: ["airplane", "pilot", "origin.location", "destination.location"],
+    });
   }
 
   async findAllPaginated(limit: number, offset: number, origin?: number, destination?: number): Promise<{ flights: FlightEntity[], total: number }> {
@@ -30,13 +29,14 @@ export class FlightPgRepo implements FlightRepo {
   }
 
   async findById(id: number): Promise<FlightEntity | null> {
-    return this.repository.findOne({ 
-      where:{id},
-     },
-      
+    return this.repository.findOne({
+      where: { id },
+      relations: ["airplane", "pilot", "origin.location", "destination.location"],
+    },
+
     );
   }
-  
+
 
   async create(flight: FlightEntity): Promise<FlightEntity> {
     return this.repository.save(flight);
