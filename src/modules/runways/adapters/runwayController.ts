@@ -4,9 +4,11 @@ import { FindRunwayByIdUseCase } from "../use_cases/finById";
 import { CreateRunwayUseCase } from "../use_cases/create";
 import { UpdateRunwayUseCase } from "../use_cases/update";
 import { DeleteRunwayUseCase } from "../use_cases/delete";
+import { FindAllRunwayUseCase } from "../use_cases/findAll";
 
 export class RunwayController {
-  constructor(private readonly findAllUseCase: FindRunwaysUseCase,
+  constructor(private readonly findPaginatedUseCase: FindRunwaysUseCase,
+    private readonly findAllUseCase: FindAllRunwayUseCase,
     private readonly findByIdUseCase: FindRunwayByIdUseCase,
     private readonly createUseCase: CreateRunwayUseCase,
     private readonly updateUseCase: UpdateRunwayUseCase,
@@ -14,13 +16,23 @@ export class RunwayController {
 
   ) { }
 
-  findAll = async (req: Request, res: Response) => {
+  findAll = async (req:Request, res: Response)=>{
+    try{
+      const runways= await this.findAllUseCase.run()
+      res.json(runways);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Error finding runways." });
+    }
+  }
+
+  findAllPaginated = async (req: Request, res: Response) => {
 
     try {
       const page = parseInt(req.query.page as string) || 1; // Página actual (por defecto 1)
       const limit = parseInt(req.query.limit as string) || 10; // Cantidad de registros por página (por defecto 10)
 
-      const { data, total, totalPages } = await this.findAllUseCase
+      const { data, total, totalPages } = await this.findPaginatedUseCase
         .run(page, limit);
       res.status(200).json({
         data,

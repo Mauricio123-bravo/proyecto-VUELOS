@@ -7,13 +7,18 @@ import FlightRouter from "./adapters/flightRouter";
 import { FlightRepo } from "./models/flight.repository";
 import { CreateFlightUseCase } from "./use_cases/create";
 import { DeleteFlightUseCase } from "./use_cases/delete";
-import { FindFlightsUseCase } from "./use_cases/find";
+import { FindPaginatedFlightsUseCase } from "./use_cases/find";
+import { FindAllFlightUseCase } from "./use_cases/findAll";
 import { FindFlightByIdUseCase } from "./use_cases/findById";
 import { UpdateFlightUseCase } from "./use_cases/update";
 
 const flightRepository: FlightRepo = new FlightPgRepo();
 const runwayRepository: RunwayRepo = new RunwaykPgRepo();
-const findFlightsUseCase: FindFlightsUseCase = new FindFlightsUseCase(
+
+const findAllFlightUseCase: FindAllFlightUseCase = new FindAllFlightUseCase(
+  flightRepository,
+);
+const findPaginatedFlightsUseCase: FindPaginatedFlightsUseCase = new FindPaginatedFlightsUseCase(
   flightRepository,
 );
 const findByIdFlightsUseCase: FindFlightByIdUseCase = new FindFlightByIdUseCase(
@@ -23,14 +28,14 @@ const createFlightsUseCase: CreateFlightUseCase = new CreateFlightUseCase(
   flightRepository, runwayRepository
 );
 const updateFlightsUseCase: UpdateFlightUseCase = new UpdateFlightUseCase(
-  flightRepository,
+  flightRepository, runwayRepository
 );
 const deleteFlightsUseCase: DeleteFlightUseCase = new DeleteFlightUseCase(
   flightRepository,
 );
 
 const flightController: FlightController = new FlightController(
-  findFlightsUseCase, findByIdFlightsUseCase, createFlightsUseCase, updateFlightsUseCase, deleteFlightsUseCase
+  findAllFlightUseCase, findPaginatedFlightsUseCase, findByIdFlightsUseCase, createFlightsUseCase, updateFlightsUseCase, deleteFlightsUseCase
 );
 const flightRouter: FlightRouter = new FlightRouter(flightController, authMiddleware);
 

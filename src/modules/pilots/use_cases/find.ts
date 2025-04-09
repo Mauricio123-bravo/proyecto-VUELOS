@@ -2,7 +2,7 @@ import { PilotRepo } from "../models/pilot.repository";
 import { Pilot } from "../models/pilot.model";
 import { getPagination, getTotalPages } from "../../shared/utils/getPagination";
 
-export class FindPilotsUseCase {
+export class FindPaginatedPilotsUseCase {
   constructor(private readonly repository: PilotRepo) { }
 
   public run = async (page: number, limit: number): Promise<{ data: Pilot[], total: number, totalPages: number }> => {

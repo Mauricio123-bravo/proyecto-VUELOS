@@ -10,15 +10,19 @@ export default class AirplaneRouter {
 
   public getRoutes(): Router {
     const router = Router();
-    
+
     router.use(
       this.authMiddleware.authorizeRole([UserRole.ADMIN])
     );
 
     router
       .route("/airplanes")
-      .get(this.airplaneController.findAll)
+      .get(this.airplaneController.findAllPaginated)
       .post(this.airplaneController.create);
+
+    router
+      .route("/airplanes/all")
+      .get(this.airplaneController.findAll);
 
     router
       .route("/airplanes/:id")

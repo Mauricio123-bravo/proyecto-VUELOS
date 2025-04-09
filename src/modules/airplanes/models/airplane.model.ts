@@ -4,7 +4,7 @@ import { Maintenance } from "../../maintenances/models/maintenance.model";
 export abstract class Airplane {
     id: number;
     name:string;
-    modelYear: string;
+    modelYear: number;
     capacity: number;
     status: boolean;
     flights: Flight[]

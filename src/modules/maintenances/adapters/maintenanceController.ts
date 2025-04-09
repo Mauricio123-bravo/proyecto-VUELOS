@@ -4,22 +4,34 @@ import { FindMaintenanceByIdUseCase } from "../use_cases/findById";
 import { CreateMaintenanceUseCase } from "../use_cases/create";
 import { UpdateMaintenanceUseCase } from "../use_cases/update";
 import { DeleteMaintenanceUseCase } from "../use_cases/delete";
+import { FindAllMaintenanceUseCase } from "../use_cases/findAll";
 
 export class MaintenanceController {
-  constructor(private readonly findAllUseCase: FindMaintenancesUseCase,
+  constructor(private readonly findAllUseCase: FindAllMaintenanceUseCase,
+    private readonly findPaginatedUseCase: FindMaintenancesUseCase,
     private readonly findByIdUseCase: FindMaintenanceByIdUseCase,
     private readonly createUseCase: CreateMaintenanceUseCase,
     private readonly updateUseCase: UpdateMaintenanceUseCase,
     private readonly deleteUseCase: DeleteMaintenanceUseCase
   ) { }
 
-  findAll = async (req: Request, res: Response) => {
+  findAll = async (req:Request, res: Response)=>{
+    try{
+      const pilots= await this.findAllUseCase.run()
+      res.json(pilots);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Error finding maintenances." });
+    }
+  }
+
+  findPaginated = async (req: Request, res: Response) => {
 
     try {
       const page = parseInt(req.query.page as string) || 1; // Página actual (por defecto 1)
       const limit = parseInt(req.query.limit as string) || 10; // Cantidad de registros por página (por defecto 10)
 
-      const { data, total, totalPages } = await this.findAllUseCase
+      const { data, total, totalPages } = await this.findPaginatedUseCase
         .run(page, limit);
       res.status(200).json({
         data,

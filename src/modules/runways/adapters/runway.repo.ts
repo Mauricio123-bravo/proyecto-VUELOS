@@ -7,7 +7,11 @@ export class RunwaykPgRepo implements RunwayRepo {
   private repository = AppDataSource.getRepository(RunwayEntity);
 
   findAll(): Promise<Runway[]> {
-    return this.repository.find();
+    return this.repository.find(
+      {
+        relations:["location"]
+      }
+    );
   }
   async findAllPaginated(limit: number, offset: number): Promise<{ runways: RunwayEntity[], total: number }> {
     const [runways, total] = await this.repository.findAndCount({

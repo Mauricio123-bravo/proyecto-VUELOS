@@ -7,10 +7,14 @@ import { CreateRunwayUseCase } from "./use_cases/create";
 import { DeleteRunwayUseCase } from "./use_cases/delete";
 import { FindRunwayByIdUseCase } from "./use_cases/finById";
 import { FindRunwaysUseCase } from "./use_cases/find";
+import { FindAllRunwayUseCase } from "./use_cases/findAll";
 import { UpdateRunwayUseCase } from "./use_cases/update";
 
 const runwayRepository: RunwayRepo = new RunwaykPgRepo();
-const findRunwaysUseCase: FindRunwaysUseCase = new FindRunwaysUseCase(
+const findPaginatedRunwaysUseCase: FindRunwaysUseCase = new FindRunwaysUseCase(
+    runwayRepository,
+);
+const findAllRunwaysUseCase: FindAllRunwayUseCase = new FindAllRunwayUseCase(
     runwayRepository,
 );
 const findByIdRunwaysUseCase: FindRunwayByIdUseCase = new FindRunwayByIdUseCase(
@@ -27,7 +31,7 @@ const deleteRunwaysUseCase: DeleteRunwayUseCase = new DeleteRunwayUseCase(
 );
 
 const runwayController: RunwayController = new RunwayController(
-    findRunwaysUseCase, findByIdRunwaysUseCase, createRunwaysUseCase, updateRunwaysUseCase, deleteRunwaysUseCase
+    findPaginatedRunwaysUseCase, findAllRunwaysUseCase, findByIdRunwaysUseCase, createRunwaysUseCase, updateRunwaysUseCase, deleteRunwaysUseCase,
 );
 const runwayRouter: RunwayRouter = new RunwayRouter(runwayController, authMiddleware);
 
