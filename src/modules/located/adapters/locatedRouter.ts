@@ -16,9 +16,16 @@ export default class LocatedRouter {
       .route("/located")
       .get(
         this.authMiddleware.authorizeRole([UserRole.ADMIN, UserRole.PILOT]),
-        this.locatedController.findAll
+        this.locatedController.findAllPaginated
       )
       .post(this.authMiddleware.authorizeRole([UserRole.ADMIN]), this.locatedController.create);
+
+    router
+      .route("/located/all")
+      .get(
+        this.authMiddleware.authorizeRole([UserRole.ADMIN, UserRole.PILOT]),
+        this.locatedController.findAll
+      )
 
     router
       .route("/located/:id")

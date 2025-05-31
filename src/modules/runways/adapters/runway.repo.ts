@@ -6,7 +6,7 @@ import { RunwayEntity } from "./runway.entity";
 export class RunwaykPgRepo implements RunwayRepo {
   private repository = AppDataSource.getRepository(RunwayEntity);
 
-  findAll(): Promise<Runway[]> {
+  async findAll(): Promise<Runway[]> {
     return this.repository.find(
       {
         relations:["location"]
@@ -15,6 +15,7 @@ export class RunwaykPgRepo implements RunwayRepo {
   }
   async findAllPaginated(limit: number, offset: number): Promise<{ runways: RunwayEntity[], total: number }> {
     const [runways, total] = await this.repository.findAndCount({
+      relations:["location"],
       take: limit,  // Límite de registros por página
       skip: offset, // Desde qué registro empezar
     });

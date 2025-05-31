@@ -18,19 +18,19 @@ export class FlightEntity {
   @Column({ type: "boolean", nullable: false })
   status: boolean;
 
-  @ManyToOne(() => AirplaneEntity, (airplane) => airplane.flights)
+  @ManyToOne(() => AirplaneEntity, (airplane) => airplane.flights, {onDelete:"CASCADE"})
   @JoinColumn({ name: "airplane_id" })
   airplane: AirplaneEntity;
 
-  @ManyToOne(() => PilotEntity, (pilot) => pilot.flights)
+  @ManyToOne(() => PilotEntity, (pilot) => pilot.flights, {onDelete:"CASCADE"})
   @JoinColumn({ name: "pilot_id" })
   pilot: PilotEntity;
 
-  @ManyToOne(() => RunwayEntity, (runaway) => runaway.flightsOrigin)
+  @ManyToOne(() => RunwayEntity, (runaway) => runaway.flightsOrigin,  {onDelete:"CASCADE"})
   @JoinColumn({ name: "origin_id" })
   origin: RunwayEntity;
 
-  @ManyToOne(() => RunwayEntity, (runaway) => runaway.flightsDestination)
+  @ManyToOne(() => RunwayEntity, (runaway) => runaway.flightsDestination,  {onDelete:"CASCADE"})
   @JoinColumn({ name: "destination_id" })
   destination: RunwayEntity;
 

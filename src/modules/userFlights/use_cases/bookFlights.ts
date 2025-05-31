@@ -1,10 +1,7 @@
 import { UserFlightRepo } from "../models/userFlight.repository";
 import { UserRepo } from "../../users/models/user.repository";
 import { FlightRepo } from "../../flights/models/flight.repository";
-import { UserFlight } from "../models/userFlight.model";
-import { UserNotFoundError } from "../../users/models/errors/userNotFound.error";
 import { TokenProvider } from "../../auth/models/providers/tokenProvider";
-import { FlightNotFoundError } from "../../flights/models/error/flightNotFound.error";
 import { UserFlightBadRequestError } from "../models/error/userFlightBadRequest.error";
 
 export class BookFlightsUseCase {
@@ -24,11 +21,11 @@ export class BookFlightsUseCase {
 
 
         const user = await this.userRepository.findById(userId);
-        if (!user) throw new UserNotFoundError();
+        if (!user) throw new Error("User not found");
 
 
         const flight = await this.flightRepository.findById(flightId);
-        if (!flight) throw new FlightNotFoundError();
+        if (!flight) throw new Error("Flight not found");
 
 
         const booking = await this.repository.bookFlight(user, flight, seatNumber);

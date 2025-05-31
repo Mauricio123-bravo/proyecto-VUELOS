@@ -14,7 +14,7 @@ export class FlightController {
     private readonly createUseCase: CreateFlightUseCase,
     private readonly updateUseCase: UpdateFlightUseCase,
     private readonly deleteUseCase: DeleteFlightUseCase,
-  ) {}
+  ) { }
 
   findAll = async (req: Request, res: Response) => {
 
@@ -29,16 +29,12 @@ export class FlightController {
 
   }
 
-  findAllPaginated = async (req: Request, res: Response) => {
+  findAllPaginated = async (req: Request, res: Response): Promise<void> => {
     try {
       const page = parseInt(req.query.page as string) || 1; // Página actual (por defecto 1)
-      const limit = parseInt(req.query.limit as string) || 9; // Cantidad de registros por página (por defecto 10)
-      const origin = req.query.origin
-        ? parseInt(req.query.origin as string)
-        : undefined;
-      const destination = req.query.destination
-        ? parseInt(req.query.destination as string)
-        : undefined;
+      const limit = parseInt(req.query.limit as string) || 9; // Cantidad de registros por página (por defecto 9)
+      const origin = req.query.origin ? req.query.origin as string : undefined;
+      const destination = req.query.destination ? req.query.destination as string : undefined;
 
       const { data, total, totalPages } = await this.findAPaginatedUseCase.run(
         page,
@@ -46,21 +42,27 @@ export class FlightController {
         origin,
         destination,
       );
+
       res.status(200).json({
         data,
         total,
         page,
         totalPages,
-        filters: { origin, destination },
+        message: data.length === 0 
+          ? `No flights available from ${origin || 'any origin'} to ${destination || 'any destination'}`
+          : undefined
       });
+  
     } catch (err) {
       console.log(err);
-
       res.status(500).json({
         message: "Something went wrong while getting data, try latter.",
       });
     }
   };
+
+
+
 
   findById = async (req: Request, res: Response) => {
     try {

@@ -6,7 +6,7 @@ import { AirplaneEntity } from "./airplane.entity";
 export class AirplanePgRepo implements AirplaneRepo {
   private repository = AppDataSource.getRepository(AirplaneEntity);
 
-  findAll(): Promise<Airplane[]> {
+  async findAll(): Promise<Airplane[]> {
     return this.repository.find();
   }
 
