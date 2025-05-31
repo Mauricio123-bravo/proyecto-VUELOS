@@ -1,5 +1,5 @@
 import { RunwayRepo } from "../../runways/models/runway.repository";
-import { DistanceError } from "../models/error/distance.error";
+import { DistanceError } from "../models/errors/distance.error";
 import { Flight } from "../models/flight.model";
 import { FlightRepo } from "../models/flight.repository";
 import { calculateDistance } from "../utils/calculateDistance ";

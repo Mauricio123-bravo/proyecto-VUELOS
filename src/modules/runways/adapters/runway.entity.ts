@@ -7,13 +7,16 @@ export class RunwayEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: "varchar", length: 100, nullable: false })
-  length: string;
+  @Column({ type: "double precision", nullable: false })
+  length: number;
+
+  @Column({ type: "double precision", nullable: false })
+  width: number;
 
   @Column({ type: "boolean", nullable: false })
   status: boolean;
 
-  @ManyToOne(() => LocatedEntity, (located) => located.runways)
+  @ManyToOne(() => LocatedEntity, (located) => located.runways, {onDelete:"CASCADE"})
   @JoinColumn({ name: "located_id" })
   location: LocatedEntity;
 

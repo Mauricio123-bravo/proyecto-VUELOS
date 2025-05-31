@@ -6,7 +6,7 @@ import { MaintenanceEntity } from "./maintenance.entity";
 export class MaintenancePgRepo implements MaintenanceRepo {
   private repository = AppDataSource.getRepository(MaintenanceEntity);
 
-  findAll(): Promise<Maintenance[]> {
+  async findAll(): Promise<Maintenance[]> {
     return this.repository.find({
       relations: ["airplane"],
   });

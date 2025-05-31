@@ -5,7 +5,7 @@ import { FlightRepo } from "../models/flight.repository";
 export class FindPaginatedFlightsUseCase {
   constructor(private readonly repository: FlightRepo) { }
 
-  public run = async (page: number, limit: number, origin?: number, destination?: number): Promise<{ data: Flight[], total: number, totalPages: number }> => {
+  public run = async (page: number, limit: number, origin?: string, destination?: string): Promise<{ data: Flight[], total: number, totalPages: number }> => {
 
     const offset = getPagination(page, limit);
 

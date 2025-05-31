@@ -6,27 +6,36 @@ import { FlightEntity } from "./flight.entity";
 export class FlightPgRepo implements FlightRepo {
   private repository = AppDataSource.getRepository(FlightEntity);
 
-  findAll(): Promise<Flight[]> {
+  async findAll(): Promise<Flight[]> {
     return this.repository.find({
       relations: ["airplane", "pilot", "origin.location", "destination.location"],
     });
   }
 
-  async findAllPaginated(limit: number, offset: number, origin?: number, destination?: number): Promise<{ flights: FlightEntity[], total: number }> {
-
-    const filters: any = {};
-    if (origin) filters.origin = origin;
-    if (destination) filters.destination = destination;
-
-    const [flights, total] = await this.repository.findAndCount({
-      where: filters,
-      relations: ["airplane", "pilot", "origin.location", "destination.location"],
-      take: limit,  // Límite de registros por página
-      skip: offset, // Desde qué registro empezar
-    });
-
+  async findAllPaginated(limit: number, offset: number, origin?: string, destination?: string): Promise<{ flights: FlightEntity[], total: number }> {
+    const query = this.repository
+      .createQueryBuilder('flight')
+      .leftJoinAndSelect('flight.origin', 'origin')
+      .leftJoinAndSelect('origin.location', 'originLocation')
+      .leftJoinAndSelect('flight.destination', 'destination')
+      .leftJoinAndSelect('destination.location', 'destinationLocation')
+      .skip(offset)
+      .take(limit);
+  
+    if (origin) {
+      query.andWhere('originLocation.name ILIKE :origin', { origin: `%${origin}%` });
+    }
+  
+    if (destination) {
+      query.andWhere('destinationLocation.name ILIKE :destination', { destination: `%${destination}%` });
+    }
+  
+    const [flights, total] = await query.getManyAndCount();
+  
     return { flights, total };
   }
+  
+  
 
   async findById(id: number): Promise<FlightEntity | null> {
     return this.repository.findOne({

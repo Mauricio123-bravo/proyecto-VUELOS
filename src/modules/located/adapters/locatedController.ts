@@ -4,9 +4,11 @@ import { FindLocatedByIdUseCase } from "../use_cases/findById";
 import { CreateLocatedUseCase } from "../use_cases/create";
 import { UpdateLocatedUseCase } from "../use_cases/update";
 import { DeleteLocatedUseCase } from "../use_cases/delete";
+import { FindAllLocatedUseCase } from "../use_cases/findAll";
 
 export class LocatedController {
-  constructor(private readonly findAllUseCase: FindLocatedUseCase,
+  constructor(private readonly findAllUseCase: FindAllLocatedUseCase,
+    private readonly findPaginatedUseCase: FindLocatedUseCase,
     private readonly findByIdUseCase: FindLocatedByIdUseCase,
     private readonly createUseCase: CreateLocatedUseCase,
     private readonly updateUseCase: UpdateLocatedUseCase,
@@ -14,13 +16,23 @@ export class LocatedController {
 
   ) { }
 
-  findAll = async (req: Request, res: Response) => {
+  findAll = async (req:Request, res: Response)=>{
+    try{
+      const located= await this.findAllUseCase.run()
+      res.json(located);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Error finding located." });
+    }
+  }
+
+  findAllPaginated = async (req: Request, res: Response) => {
 
     try {
       const page = parseInt(req.query.page as string) || 1; // Página actual (por defecto 1)
       const limit = parseInt(req.query.limit as string) || 10; // Cantidad de registros por página (por defecto 10)
 
-      const { data, total, totalPages } = await this.findAllUseCase
+      const { data, total, totalPages } = await this.findPaginatedUseCase
         .run(page, limit);
       res.status(200).json({
         data,

@@ -7,7 +7,7 @@ import { LocatedEntity } from "./located.entity";
 export class LocatedPgRepo implements LocatedRepo {
   private repository = AppDataSource.getRepository(LocatedEntity);
 
-  findAll(): Promise<Located[]> {
+  async findAll(): Promise<Located[]> {
     return this.repository.find();
   }
 

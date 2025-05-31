@@ -8,11 +8,11 @@ export class UserFlightEntity {
   @PrimaryGeneratedColumn("uuid") 
   id: string;
 
-  @ManyToOne(() => FlightEntity, (flight) => flight.usersFlight)
+  @ManyToOne(() => FlightEntity, (flight) => flight.usersFlight, {onDelete:"CASCADE"})
   @JoinColumn({ name: "flight_id" })
   flight: FlightEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.userFlight)
+  @ManyToOne(() => UserEntity, (user) => user.userFlight, {onDelete:"CASCADE"})
   @JoinColumn({ name: "user_id" })
   user: UserEntity; 
 

@@ -110,4 +110,5 @@ export class AirplaneController {
       res.status(500).json({ message: "Error deleting airplane." });
     }
   };
+
 }
